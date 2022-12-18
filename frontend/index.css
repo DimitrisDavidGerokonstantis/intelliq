@@ -1,0 +1,68 @@
+body {
+  background-color: #666262;
+}
+
+.end{
+  font: Verdana,sans-serif;
+  font-size: x-large;
+  text-align:center;
+  background-color:#F3F2ED;
+}
+
+.option{
+  font-family: system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+
+.form{
+  background-color: #CEC3C3;
+  margin: auto;
+  height: 200px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 3px solid #FFD700	;
+  box-shadow:
+    0 1px 1px rgba(0,0,0,0,15),
+    0 10px 0 -5px #eee,
+    0 10px 1px -4px rgba(0,0,0,0,15),
+    0 20px 0 -10px #eee,
+    0 20px 1px -9px rgba(0,0,0,0,15);
+  padding: 80px;
+
+}
+
+.title{
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: 30px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 70px 100px 0;
+  height: 180px;
+  width: 70%;
+  border-bottom: 1px solid #cecece;
+  font-weight: 100;
+  color: #333333;
+}
+
+.begin{
+  background-color: #B3A8A8;
+}
+
+.submit{
+background: #0066A2;
+color: white;
+border-style: outset;
+border-color: #0066A2;
+height: 50px;
+width: 100px;
+font: bold 15px arial,sans-serif;
+text-shadow: none;
+}
