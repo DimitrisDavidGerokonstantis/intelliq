@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <div class="topnav">
+    <a class="active" href="index.html">IntelliQ</a>
+    <a href="about.html">About</a>
+  </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>add question</title>
+</head>
+<body>
+    <main>
+        <div>
+          <h2>Add a New Question</h2><br>
+        <label>Title: </label><br>
+        <input type="text" id="title"><br><br>
+        <div class="item">
+            <div class="checkbox-rect2">
+              <input type="checkbox" id="checkbox-rect2" name="check">
+              <label for="checkbox-rect2">Required</label>
+            </div>
+          </div>
+          <br><br>
+        <label>Number of answers: </label><br>
+        <input type="text" id="noA">
+        <button id="show-noAnswers-btn">Submit</button> <br>
+        </div>
+        <div id = 'number_of_answers'></div>
+        <section hidden id="noAnswers">
+        <div>
+        <button id="next-question-btn">Next Question</button>
+        <button id="end-btn">End</button>
+        </div>
+        </section>
+  
+        
+    </main>
+    <script src="createQuestionnaire.js"></script>
+
+ 
+</body>
+</html>
