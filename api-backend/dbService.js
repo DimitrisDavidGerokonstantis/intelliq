@@ -1,3 +1,4 @@
+//values_storage 
 const mysql = require('mysql');
 const dotenv = require('dotenv');
 const { json } = require('express');
@@ -10,11 +11,11 @@ const connection = mysql.createConnection({
    password: '',
    database: 'IntelliQ',
    port: 3306
-  // host: process.env.HOST,
-  // user: process.env.USER,
-  // password: process.env.PASSWORD,
-  // database: process.env.DATABASE,
-  // port: process.env.DB_PORT
+   /*host: process.env.HOST,
+   user: process.env.USER,
+   password: process.env.PASSWORD,
+   database: process.env.DATABASE,
+   port: process.env.DB_PORT*/
 });
 
 connection.connect((err) => {
@@ -32,7 +33,7 @@ class DbService {
     async getAllSurveys() {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM survey;";
+                const query = "select distinct(sur.id), sur.title, sur.keywords from survey as sur inner join questions as que on sur.id=que.survey_id ;";
 
                 connection.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
@@ -87,7 +88,7 @@ class DbService {
                     resolve(result.insertId);
                     console.log(result.affectedRows + " record inserted");
                 })
-            }); //console.log(insertId);
+            }); //console.log('insertId');console.log(insertId);//console.log(insertId);
              /*const insertId2 = await new Promise((resolve, reject) => {
                 const query2 = "INSERT INTO answers(title, whose_question_id) VALUES (?, ?);";
 
@@ -119,6 +120,7 @@ class DbService {
                     }) 
                 });
                 insertId2_array.push(insertId2);
+                
             }
             return {
                 question_id : insertId,
@@ -177,23 +179,13 @@ class DbService {
         }
     }
     
-    async getRequestedSurvey() {
+    async getRequestedSurvey(survID,sessID) {
         try {
-
-            const response222 = await new Promise((resolve, reject) => {
-                const query47 = "SELECT saved_value FROM session ORDER BY session_id DESC LIMIT 0, 1;";
-
-                connection.query(query47, (err, results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);
-                  //  console.log(result.affectedRows + " record inserted");
-                })
-            });
 
             const response45 = await new Promise((resolve, reject) => {
                 const query100 = "SELECT que.id as queid FROM questions as que inner join survey as sur on sur.id=que.survey_id where sur.id=? ORDER BY que.id ASC LIMIT 0, 1;";
 
-                connection.query(query100,[response222[0].saved_value] ,(err,results) => {
+                connection.query(query100,[survID] ,(err,results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
                   //  console.log(result.affectedRows + " record inserted");
@@ -201,16 +193,16 @@ class DbService {
             });
 
             const response69 = await new Promise((resolve, reject) => {
-                const query88 = "select que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque from questions as que inner join answers as ans on que.id=ans.whose_question_id where que.id=?;";
+                const query88 = "select ? as sessID ,que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque, ans.id as answerid, sur.id as surid from questions as que inner join answers as ans on que.id=ans.whose_question_id inner join survey as sur on sur.id=que.survey_id where que.id=?;";
 
-                connection.query(query88, [response45[0].queid], (err,results) => {
+                connection.query(query88, [sessID,response45[0].queid], (err,results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
                   //  console.log(result.affectedRows + " record inserted");
                 })
             });
 
-            console.log(response69);
+            //console.log(response69);
             return response69;
         } catch (error) {
             console.log(error);
@@ -218,10 +210,10 @@ class DbService {
     }
 
     
-    async insertNewSession(button_value) {
+    async Save_new_value(button_value) {
         try {
             const insertId20 = await new Promise((resolve, reject) => {
-                const query37 = "INSERT INTO session(saved_value) VALUES (?);";
+                const query37 = "INSERT INTO values_storage(saved_value) VALUES (?);";
 
                 connection.query(query37, [button_value] , (err, result) => {
                     if (err) reject(new Error(err.message));
@@ -237,9 +229,85 @@ class DbService {
             console.log(error);
         }
     }
+
+
+
+    async getNextQuestion(option,sessionID) {
+        try {
+
+            const response12 = await new Promise((resolve, reject) => {
+                const query101 = "select next_question_id as nextq from answers where id=?;"
+
+                connection.query(query101,[option] ,(err,results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                  //  console.log(result.affectedRows + " record inserted");
+                })
+            });
+
+            const response70 = await new Promise((resolve, reject) => {
+                const query89 = "select ? as sessID, que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque, ans.id as answerid, sur.id as surid from questions as que inner join answers as ans on que.id=ans.whose_question_id inner join survey as sur on sur.id=que.survey_id where que.id=?;";
+
+                connection.query(query89, [sessionID,response12[0].nextq], (err,results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                  //  console.log(result.affectedRows + " record inserted");
+                })
+            });
+
+            console.log(response70);
+            return response70;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    async createNewSession(survID) {
+        try {
+            let sesID = Buffer.from(Math.random().toString()).toString("base64").substring(10,14);
+            const insertId32 = await new Promise((resolve, reject) => {
+                const query38 = "INSERT INTO session (session_id,survey_id, registered_users_id) VALUES (?,?, 1);";
+
+                connection.query(query38, [sesID,survID] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId32);
+                    console.log(result.affectedRows + " record inserted");
+                })
+            });
+            console.log('insertId32',insertId32);
+            return {
+                session_id:sesID,
+                survID:survID
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+
+    async SaveGivenAnswer(sessionID,optionID) {
+        try {
+            const insertId53 = await new Promise((resolve, reject) => {
+                const query53 = "INSERT INTO answers_registered_users VALUES (?,?, ?);";
+
+                connection.query(query53, [optionID, 1, sessionID] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId53);
+                    console.log(result.affectedRows + " record inserted");
+                })
+            });
+            return {
+                insertId53 : insertId53,
+                sessionID : sessionID,
+                optionID : optionID
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+        
+
 }
-
-
-
-
 module.exports = DbService;
