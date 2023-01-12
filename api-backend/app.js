@@ -76,10 +76,22 @@ app.patch('/updateFlow', (request, response) => {
 
 
 //answer survey
-app.get('/answer_survey', (request, response) => {
-    //const {  } = request.body;
+app.get('/answer_survey/:sesID/:surID', (request, response) => {
+    const survID  = request.params.surID;
+    const sessID  = request.params.sesID;
     const db = dbService.getDbServiceInstance();
-    const result = db.getRequestedSurvey();
+    const result = db.getRequestedSurvey(survID,sessID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
+
+//answer survey
+app.post('/create_session/:value', (request, response) => {
+    const surveyID  = request.params.value;
+    const db = dbService.getDbServiceInstance();
+    const result = db.createNewSession(surveyID);
     
     result
     .then(data => response.json({data : data}))
@@ -87,14 +99,43 @@ app.get('/answer_survey', (request, response) => {
 });
 
 
-//create new session
-app.post('/save_session', (request, response) => {
+app.get('/next_question/:option/:sessionID', (request, response) => {
+    const opt  = request.params.option;
+    const sessionID  = request.params.sessionID
+    const db = dbService.getDbServiceInstance();
+    const result = db.getNextQuestion(opt,sessionID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
+
+
+//save new value
+app.post('/save_value', (request, response) => {
     const { button_value} = request.body;
     const db = dbService.getDbServiceInstance();
-    const result = db.insertNewSession(button_value);
+    const result = db.Save_new_value(button_value);
     result
     .then(data => response.json({ data: data}))
     .catch(err => console.log(err));
 });
+
+//save new value
+app.post('/doanswer/:questionnaireID/:questionID/:session/:optionID', (request, response) => {
+   // const surveyID  = request.params.questionnaireID;
+   // const questionID  = request.params.questionID;
+    const sessionID  = request.params.session;
+    console.log('session',sessionID);
+    
+    const optionID  = request.params.optionID;
+    console.log('option',optionID);
+    const db = dbService.getDbServiceInstance();
+    const result = db.SaveGivenAnswer(sessionID,optionID);
+    result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err));
+});
+
 
 app.listen(5000, () => console.log('app is running'));
