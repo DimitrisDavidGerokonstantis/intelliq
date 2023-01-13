@@ -148,7 +148,7 @@ function MyFunction3(sessionID, survey_id) {
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
     .then(document.getElementById('title_h1').innerHTML = "")
     .then(data => loadHTMLTable3(data['data']));
-
+}
 function ShowQuestions(questionnaireID) {
     fetch('http://localhost:5000/getquestionanswers/' + questionnaireID, {
         headers: {
@@ -157,10 +157,10 @@ function ShowQuestions(questionnaireID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable3(data['data']));
+    .then(data => loadHTMLTable13(data['data']));
 }
 
-function loadHTMLTable3(data) {
+function loadHTMLTable13(data) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0 ;
