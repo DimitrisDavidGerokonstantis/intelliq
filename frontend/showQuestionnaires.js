@@ -21,7 +21,8 @@ function loadHTMLTable(data) {
         tableHtml += `<td>${id}</td>`;
         tableHtml += `<td>${title}</td>`;
         tableHtml += `<td>${keywords}</td>`;
-        tableHtml += `<td><button id="${help_counter}" onclick="createSession(${id})" value="${id}">Answer</button></td>`;
+        tableHtml += `<td><button id="${help_counter}" onclick="createSession(${id})" value="${id}">Answer</button>`;
+        tableHtml += `<button id="${help_counter}" onclick="ShowQuestions(${id})" value="${id}">Statistics</button></td>`;
         tableHtml += "</tr>";
         help_counter +=1;
         console.log(help_counter);
@@ -151,4 +152,60 @@ chooseBtn.onclick = function () {
    // .then(data => insertRowIntoTable(data['data']));
 }*/
 
+function ShowQuestions(questionnaireID) {
+    fetch('http://localhost:5000/getquestionanswers/' + questionnaireID, {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'GET'
+    })
+    .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
+    .then(data => loadHTMLTable3(data['data']));
+}
 
+function loadHTMLTable3(data) {
+    const table = document.querySelector('#showSurveys_main');
+    let tableHtml = "";
+    let counter = 0 ;
+    data.forEach(function ({surTitle, queTitle, queID, surID}) {  
+         if(counter==0)tableHtml += `<h1>Survey : ${surTitle}</h1>`;     
+         tableHtml += `<h3>${queTitle}  `;
+         tableHtml += " "
+         tableHtml += ` <button class="statistic-button" id="${queID}" name="${surTitle}" onclick="Statistics(${queID},${surID})", value="5">See Statistics</button></h3>`;
+         counter++
+ });
+
+    table.innerHTML = tableHtml;
+}
+
+
+
+function Statistics(questionID,questionnaireID) {
+    fetch('http://localhost:5000/getquestionanswers/' + questionnaireID +'/' + questionID, {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'GET'
+    })
+    .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
+    .then(data => loadHTMLTable4(data['data']));
+}
+
+function loadHTMLTable4(data) {
+    const table = document.querySelector('#showSurveys_main');
+    let tableHtml = "";
+    let counter = 0;
+    data.forEach(function ({Survey, Session, Question,AnswerTitle, Time}) {  
+        if(counter==0) {tableHtml += `<h1>${Survey} : `;tableHtml += `${Question}</h1>`;}
+         tableHtml += `<h3>Session : ${Session}   |   Answer : ${AnswerTitle} (Time :${Time})</h3><br> `;
+         counter++;
+ });
+
+    if(counter!=0)tableHtml += `<button onclick="Back()">Back</button>`;
+    else {tableHtml += `<br><br><br><h1>No Data</h1>`;tableHtml += `<br><br><br><br><button onclick="Back()">Back</button>`;}
+    table.innerHTML = tableHtml;
+}
+
+function Back(){
+    location.replace('showQuestionnaires.html');
+}

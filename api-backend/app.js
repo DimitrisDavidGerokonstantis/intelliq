@@ -150,4 +150,28 @@ app.get('/login/:email/:pass', (request, response) => {
 });
 
 
+
+app.get('/getquestionanswers/:questionnaireID', (request, response) => {
+    const questionnaireID  = request.params.questionnaireID;
+    const db = dbService.getDbServiceInstance();
+    const result = db.getSurveysQuestions(questionnaireID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+    
+});
+
+app.get('/getquestionanswers/:questionnaireID/:questionID', (request, response) => {
+    const questionID  = request.params.questionID;
+    const db = dbService.getDbServiceInstance();
+    const result = db.getStatistics(questionID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+    
+});
+
+
 app.listen(5000, () => console.log('app is running'));

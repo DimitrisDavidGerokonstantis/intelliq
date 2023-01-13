@@ -324,12 +324,39 @@ class DbService {
         }
     }
         
+    async getSurveysQuestions(questionnaireID) {
+        try {
+            
+            const insertId23 = await new Promise((resolve, reject) => {
+                const query888 = "select sur.title as surTitle, que.title as queTitle, que.id as queID, sur.id as surID from survey as sur inner join questions as que on que.survey_id=sur.id where sur.id=?;"
+                connection.query(query888,[questionnaireID] ,(err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);   
+                })
+            });
+            console.log(insertId23);
+            return insertId23;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-
-
-
-
-
+    async getStatistics(questionID) {
+        try {
+            
+            const insertId23 = await new Promise((resolve, reject) => {
+                const query888 = "select first.Survey, first.Session, first.Question, first.AnswerTitle, first.Time_Stamp as Time from (select sur.title as Survey, ses.session_id as Session, que.title as Question, ans.id as Answer, ans.title as AnswerTitle, ses.Time_Stamp as Time_Stamp from survey as sur inner join session as ses on ses.survey_id=sur.id inner join questions as que on que.survey_id=sur.id inner join answers as ans on ans.whose_question_id=que.id where que.id=? order by ses.Time_Stamp) as first inner join answers_registered_users as second on first.Answer=second.answers_id and first.Session=second.session_id ;"
+                connection.query(query888,[questionID] ,(err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);   
+                })
+            });
+            console.log(insertId23);
+            return insertId23;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 }
 module.exports = DbService;
