@@ -208,7 +208,23 @@ class DbService {
             console.log(error);
         }
     }
-
+    
+    async checkCredentials(email,password) {
+        try {
+            
+            const insertId23 = await new Promise((resolve, reject) => {
+                const query888 = "select roles from registered_users where email=? and pass_word=?;"
+                connection.query(query888,[email,password] ,(err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);   
+                })
+            });
+            console.log(insertId23);
+            return insertId23;
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
     async Save_new_value(button_value) {
         try {
@@ -230,7 +246,7 @@ class DbService {
         }
     }
 
-
+ 
 
     async getNextQuestion(option,sessionID) {
         try {
@@ -308,6 +324,12 @@ class DbService {
         }
     }
         
+
+
+
+
+
+
 
 }
 module.exports = DbService;

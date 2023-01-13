@@ -137,5 +137,17 @@ app.post('/doanswer/:questionnaireID/:questionID/:session/:optionID', (request, 
     .catch(err => console.log(err));
 });
 
+app.get('/login/:email/:pass', (request, response) => {
+    const email  = request.params.email;
+    const password  = request.params.pass;
+    const db = dbService.getDbServiceInstance();
+    const result = db.checkCredentials(email,password);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+    
+});
+
 
 app.listen(5000, () => console.log('app is running'));

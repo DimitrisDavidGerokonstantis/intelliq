@@ -2,8 +2,9 @@
 
 <html lang="en">
     <div class="topnav">
-        <a class="active" href="index.html">IntelliQ</a>
+        <a class="active" >IntelliQ</a>
         <a href="about.html">About</a>
+        <a href="login.html">Log out</a>
       </div>
       <h1>Create a new Survey </h1>
 <head>
@@ -26,23 +27,16 @@
         <button id="create-questionnaire-btn">Create Questionnaire</button>
         <br><br><br><br><br><br>
         <button id="show-questionnaires-btn">Show Your Questionnaires</button>
-        <br><br><br><br><br><br>
-        <button id="answer-survey-btn">Answer A Questionnaire</button>
+
         </div>
     </main>
     <script src="index.js"></script>
     <script>
         const getBtn = document.querySelector('#show-questionnaires-btn');
         getBtn.onclick = function (){
-            location.replace('showQuestionnaires.html');      
+            location.replace('showQuestionnaires_admin.html');      
         }
     </script>
-        <script>
-            const ansBtn = document.querySelector('#answer-survey-btn');
-            ansBtn.onclick = function (){
-                location.replace('showQuestionnaires.html');      
-            }
-        </script>
     
 </body>
 </html>
