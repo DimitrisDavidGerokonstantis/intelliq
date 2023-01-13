@@ -345,7 +345,7 @@ class DbService {
         try {
             
             const insertId23 = await new Promise((resolve, reject) => {
-                const query888 = "select first.Survey, first.Session, first.Question, first.AnswerTitle, first.Time_Stamp as Time from (select sur.title as Survey, ses.session_id as Session, que.title as Question, ans.id as Answer, ans.title as AnswerTitle, ses.Time_Stamp as Time_Stamp from survey as sur inner join session as ses on ses.survey_id=sur.id inner join questions as que on que.survey_id=sur.id inner join answers as ans on ans.whose_question_id=que.id where que.id=? order by ses.Time_Stamp) as first inner join answers_registered_users as second on first.Answer=second.answers_id and first.Session=second.session_id ;"
+                const query888 = "select first.Survey, first.Session, first.Question, first.AnswerTitle, first.Time_Stamp as Time from (select sur.title as Survey, ses.session_id as Session, que.title as Question, ans.id as Answer, ans.title as AnswerTitle, ses.Time_Stamp as Time_Stamp from survey as sur inner join session as ses on ses.survey_id=sur.id inner join questions as que on que.survey_id=sur.id inner join answers as ans on ans.whose_question_id=que.id where que.id=?) as first inner join answers_registered_users as second on first.Answer=second.answers_id and first.Session=second.session_id order by Time_Stamp;"
                 connection.query(query888,[questionID] ,(err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);   
