@@ -5,7 +5,7 @@
         <a href="about.html">About</a>
         <a href="login.html">Log out</a>
       </div>
-      <h1>Surveys</h1>
+      <h1>Your Surveys</h1>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,17 +20,24 @@
                 <th>ID</th>
                 <th>Title</th>
                 <th>Keyword</th>
-                <th>Choose Survey</th>
+                <th>Edit Survey</th>
             </thead>
             <tbody></tbody>
         </table>
         </div>
     
-   
+    
     <br><br>
- 
+    <div class='button'>
+    <button id="back-btn">Back</button>
+    </div>
 </main>
-    <script src="showQuestionnaires.js"></script>
-
+    <script src="showQuestionnaires_admin.js"></script>
+    <script>
+        const backBtn = document.querySelector('#back-btn');
+        backBtn.onclick = function () {
+            location.replace('index.html')
+        }
+    </script>
 </body>
 </html>

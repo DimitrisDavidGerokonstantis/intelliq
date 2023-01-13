@@ -1,0 +1,30 @@
+{
+  "name": "softeng22-17",
+  "version": "1.0.0",
+  "description": "Group: softeng2022-17      \r Members: el19009 (Athanasios Tsoukleidis-Karydakis) , el19183 (Filippos Sevastakis) ,     \r          el19209 (Dimitrios David Gerokonstantis), el19847 (Ioannis Karavgoustis)",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ntua/SoftEng22-17.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ntua/SoftEng22-17/issues"
+  },
+  "homepage": "https://github.com/ntua/SoftEng22-17#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.20"
+  }
+}
