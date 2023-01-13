@@ -146,7 +146,6 @@ function MyFunction3(sessionID, survey_id) {
         method: 'GET'  
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(document.getElementById('title_h1').innerHTML = "")
     .then(data => loadHTMLTable3(data['data']));
 }
 function ShowQuestions(questionnaireID) {
