@@ -72,12 +72,13 @@ function end(sessionID) {
                     },
                     method: 'POST'
                     })
-                    .then(response => response.json());
+                    .then(response => response.json())
+                    MyFunction3(sessionID, ele[i].name);
                     
                 }
                     
             }
-    location.replace('index.html');
+  //  location.replace('index.html');
 }
 function next_question(sessionID) {
     var ele = document.getElementsByClassName('form-control');
@@ -128,27 +129,52 @@ function myFunction2(option,sessionID) {
         headers: {
             'Content-type': 'application/json'
         },
-        method: 'GET'
+        method: 'GET'  
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
     .then(data => loadHTMLTable2(data['data']));
 
 }
 
-/*const chooseBtn = document.querySelector('#choose-survey-btn');
-chooseBtn.onclick = function () {
-
-    let button_value = document.getElementById("choose-survey-btn").value;
-    fetch('http://localhost:5000/answer_survey', {
+function MyFunction3(sessionID, survey_id) {
+    //console.log(survey_id);
+    fetch('http://localhost:5000/getsessionanswers/'+survey_id+'/'+sessionID, {
         headers: {
             'Content-type': 'application/json'
         },
-        method: 'GET',
-        body: JSON.stringify({ button_value:button_value})
+        method: 'GET'  
     })
-    .then(response => response.json());
-    location.replace('answerSurvey.html');
-   // .then(data => insertRowIntoTable(data['data']));
-}*/
+    .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
+    .then(document.getElementById('title_h1').innerHTML = "")
+    .then(data => loadHTMLTable3(data['data']));
 
+}
 
+let helper;
+function loadHTMLTable3(data) {
+    const main = document.querySelector('#showSurveys_main');
+    let counter = 1;
+    let tableHtml = "";
+    tableHtml += "<h2><b>Summary of your selected answers</b></h2>"
+    data.forEach(function ({ anstitle, quetitle, quesid }) { 
+            helper = quesid;
+            tableHtml += `<h3>Question ${counter} : ${quetitle}</h3>`   
+            tableHtml += "<h3>";
+            tableHtml += `Selected Answer: ${anstitle}</h3><br><br>`;
+            counter += 1;
+    });
+    tableHtml +=`<div class='button'>`;
+    tableHtml += `<button id="end-summary" onclick="finish(helper)">Finish</button>`;
+    tableHtml +=`</div>`;
+    main.innerHTML = tableHtml;
+}
+
+function finish(helper){
+    console.log("helper: ", helper);
+    if(confirm('Your Questionnaire has been submitted! If you wish to answer another one click OK. If you wish to reanswer this one click "Cancel"')){
+    location.replace('showQuestionnaires.html');
+    }
+    else{ 
+        createSession(helper);
+    }
+}
