@@ -183,5 +183,14 @@ app.get('/getquestionanswers/:questionnaireID/:questionID', (request, response) 
     
 });
 
+app.get('/admin/healthcheck', (request, response) => {
+    const db = dbService.getDbServiceInstance();
+    const result = db.getHealthcheck();
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+    //console.log(result);
+});
 
 app.listen(5000, () => console.log('app is running'));

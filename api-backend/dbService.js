@@ -1,7 +1,7 @@
 //values_storage 
 const mysql = require('mysql');
 const dotenv = require('dotenv');
-const { json } = require('express');
+const { json, response } = require('express');
 let instance = null;
 dotenv.config();
 
@@ -23,6 +23,8 @@ connection.connect((err) => {
         console.log(err.message);
     }
      console.log('db ' + connection.state);
+     console.log('connected' == connection.state);
+     console.log('{"status":"OK", "dbconnection":[Server=' + (connection.config.host)+':5000' + ',3306;' + ' Database=' + connection.config.database+';'+' User Id='+ connection.config.user + ';'+' Password='+connection.config.password+';]}');
 });
 
 class DbService {
@@ -370,6 +372,32 @@ class DbService {
                 })
             });
             return response87;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async getHealthcheck() {
+        let status;
+        console.log(connection.state);
+        if(connection.state == 'authenticated'){
+            status = 'OK';
+        }
+        else {
+            status = 'failed';
+        }
+        try {
+
+            const response88 = await new Promise((resolve, reject) => {
+                const query101 = "select ? as status, ? as Server, ? as sqlport, ? as Database1, ? as User_Id, ? as password;";
+
+                connection.query(query101,[status, connection.config.host, connection.config.port, connection.config.database, connection.config.user, connection.config.password] ,(err,results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                  //  console.log(result.affectedRows + " record inserted");
+                })
+            });
+            console.log('response:', response88);
+            return response88;
         } catch (error) {
             console.log(error);
         }

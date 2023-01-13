@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <div class="topnav">
+    <a class="active">IntelliQ</a>
+    <a href="about.html">About</a>
+    <a href="login.html">Log out</a>
+  </div>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>System Healthcheck</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body id="about_us_body">
+    <main>
+        <h1>System Healthcheck</h1>  
+        <br><br>
+        <div id="healthcheck_page"></div>
+        <div class='button'>
+        <button id="button-btn">Back</button>
+    </main>
+    <script src="healthcheck.js"></script>
+    <script>
+        const buttonBtn = document.querySelector('#button-btn');
+        buttonBtn.onclick = function () {
+            location.replace('ShowQuestionnaires_admin.html')
+        }
+    </script>
+  </body>
+</html>

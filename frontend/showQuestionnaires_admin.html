@@ -31,6 +31,9 @@
     <div class='button'>
     <button id="back-btn">Back</button>
     </div>
+    <div class='button'>
+    <button id="health-btn">System Healthcheck</button>
+    </div>
 </main>
     <script src="showQuestionnaires_admin.js"></script>
     <script>
@@ -39,5 +42,13 @@
             location.replace('index.html')
         }
     </script>
+
+<script>
+    const healthBtn = document.querySelector('#health-btn');
+    healthBtn.onclick = function () {
+        location.replace('healthcheck.html')
+    }
+</script>
+
 </body>
 </html>
