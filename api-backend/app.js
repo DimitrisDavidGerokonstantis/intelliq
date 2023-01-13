@@ -149,6 +149,16 @@ app.get('/login/:email/:pass', (request, response) => {
     
 });
 
+app.get('/getsessionanswers/:questionnaireID/:session', (request, response) => {
+    const sessionID  = request.params.session;
+    const questionnaireID  = request.params.questionnaireID;
+    const db = dbService.getDbServiceInstance();
+    const result = db.getSummary(sessionID, questionnaireID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
 
 
 app.get('/getquestionanswers/:questionnaireID', (request, response) => {
