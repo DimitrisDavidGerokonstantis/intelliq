@@ -193,4 +193,15 @@ app.get('/admin/healthcheck', (request, response) => {
     //console.log(result);
 });
 
+//reset all parameters of the system
+app.post('/admin/resetall', (request, response) => {
+    const { button_value} = request.body;
+    const db = dbService.getDbServiceInstance();
+    const result = db.resetAll();
+    result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err));
+});
+
+
 app.listen(5000, () => console.log('app is running'));
