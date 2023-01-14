@@ -152,3 +152,162 @@ chooseBtn.onclick = function () {
 }*/
 
 
+
+//const fileSelector = document.getElementById('myFile');
+/*document.getElementById('myFile')
+.addEventListener('change', function() {
+  
+var fr=new FileReader();
+fr.readAsText(this.files[0]);
+fr.onload=function(){
+            fetch('http://localhost:5000/admin/questionnaire_upd', {
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                method: 'POST',
+                body: fr.result
+            })
+            .then(response => response.json())
+    console.log('fr.result',fr.result);
+}
+  
+})*/
+
+
+/*ileSelector.addEventListener('change', (event) => {
+  const fileList = event.target.files;
+  console.log(fileList);
+  fetch('http://localhost:5000/admin/questionnaire_upd', {
+    headers: {
+        'Content-type': 'application/json'
+    },
+    method: 'POST',
+    body: ({fileList : fileList})
+})
+.then(response => response.json())
+});*/
+
+
+    /*const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+      json.src = event.target.result;cd 
+    });
+    let ffile = reader.readAsDataURL(fileSelector);
+    
+    fetch('http://localhost:5000/admin/questionnaire_upd', {
+    headers: {
+        'Content-type': 'application/json'
+    },
+    method: 'POST',
+    body: ({ffile : ffile})
+})
+.then(response => response.json())*/
+  
+//let file = document.getElementById('input').files[0];
+//let formData = new FormData();
+//formData.append('file', file);
+//fetch('/admin/questionnaire_upd', {method: "POST", body: formData});
+
+
+// Get the form and file field
+let form = document.querySelector('#upload');
+let file = document.querySelector('#file');
+// Listen for submit events
+form.addEventListener('submit', handleSubmit);
+/**
+ * Handle submit events
+ * @param  {Event} event The event object
+ */
+function handleSubmit (event) {
+
+	// Stop the form from reloading the page
+	event.preventDefault();
+}
+/**
+ * Handle submit events
+ * @param  {Event} event The event object
+ */
+function handleSubmit (event) {
+
+	// Stop the form from reloading the page
+	event.preventDefault();
+
+	// If there's no file, do nothing
+	if (!file.value.length) return;
+
+}
+/**
+ * Handle submit events
+ * @param  {Event} event The event object
+ */
+function handleSubmit (event) {
+
+	// Stop the form from reloading the page
+	event.preventDefault();
+
+	// If there's no file, do nothing
+	if (!file.value.length) return;
+
+	// Create a new FileReader() object
+	let reader = new FileReader();
+
+}
+/**
+ * Handle submit events
+ * @param  {Event} event The event object
+ */
+function handleSubmit (event) {
+
+	// Stop the form from reloading the page
+	event.preventDefault();
+
+	// If there's no file, do nothing
+	if (!file.value.length) return;
+
+	// Create a new FileReader() object
+	let reader = new FileReader();
+
+	// Read the file
+	reader.readAsText(file.files[0]);
+
+}
+/**
+ * Handle submit events
+ * @param  {Event} event The event object
+ */
+function handleSubmit (event) {
+
+	// Stop the form from reloading the page
+	event.preventDefault();
+
+	// If there's no file, do nothing
+	if (!file.value.length) return;
+
+	// Create a new FileReader() object
+	let reader = new FileReader();
+
+	// Setup the callback event to run when the file is read
+	reader.onload = logFile;
+
+	// Read the file
+	reader.readAsText(file.files[0]);
+
+}
+/**
+ * Log the uploaded file to the console
+ * @param {event} Event The file loaded event
+ */
+function logFile (event) {
+	let str = event.target.result;
+	let json = JSON.parse(str);
+	//console.log('string', str);
+	console.log('json', json);
+    fetch('http://localhost:5000/admin/questionnaire_upd', {
+        headers: {
+            'Content-type': 'application/json'
+        },
+    method: 'POST',
+    body: JSON.stringify({surID : json.questionnaireID, surTitle : json.questionnaireTitle, keywords : json.keywords, questions : json.questions})
+})
+.then(response => response.json())
+}

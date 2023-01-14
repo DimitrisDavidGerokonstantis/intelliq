@@ -193,4 +193,19 @@ app.get('/admin/healthcheck', (request, response) => {
     //console.log(result);
 });
 
+const Fs = require('fs/promises')
+app.post('/admin/questionnaire_upd', (request, response) => {
+    // const surveyID  = request.params.questionnaireID;
+    // const questionID  = request.params.questionID;
+     const {surID, surTitle,keywords,questions}  = request.body;
+    console.log('app js',surID,surTitle,keywords,questions[0].options.length);
+    //const json = Fs.readFile(file_content)  
+
+     const db = dbService.getDbServiceInstance();
+     const result = db.newSurveyJson(surID, surTitle,keywords,questions);
+     result
+     .then(data => response.json({ data: data}))
+     .catch(err => console.log(err));
+ });
+
 app.listen(5000, () => console.log('app is running'));

@@ -403,5 +403,59 @@ class DbService {
         }
     }
 
+
+
+    async newSurveyJson(surID, surTitle,keywords,questions) {
+        try {
+            const insertId57 = await new Promise((resolve, reject) => {
+                const query53 = "INSERT INTO survey VALUES (?,?,?);";
+
+                connection.query(query53, [surID, surTitle, keywords] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId57);
+                    console.log(result.affectedRows + " record inserted");
+                })
+            });
+            
+            let N = questions.length;
+            for(var i = 0  ; i < N ; i++){
+                var insertId54 = await new Promise((resolve, reject) => {
+                    var query54 = "INSERT INTO questions VALUES (?,?, ?, ?, 1, ?);";
+    
+                    connection.query(query54, [questions[i].qID, questions[i].qtext, questions[i].required,questions[i].type,surID] , (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result.insertId54);
+                        console.log(result.affectedRows + " record inserted");
+                    })
+                });
+                let ansN = questions[i].options.length;
+                console.log(ansN);
+                for(var j = 0 ; j < ansN ; j++){
+                    console.log(questions[i].options[j].optID, questions[i].options[j].opttxt,questions[i].qID,questions[i].options[j].nextqID);
+                    var insertId55 = await new Promise((resolve, reject) => {
+                        var query55 = "INSERT INTO answers VALUES (?,?,?,?);";
+        
+                        connection.query(query55, [questions[i].options[j].optID, questions[i].options[j].opttxt,questions[i].qID,questions[i].options[j].nextqID] , (err, result) => {
+                            if (err) reject(new Error(err.message));
+                            resolve(result.insertId55);
+                            console.log(result.affectedRows + " record inserted");
+                        })
+                    });
+                }
+            }
+            
+            return {
+                insertId57:insertId57,
+                surID : surID,
+                surTitle : surTitle,
+                keywords : keywords,
+                questions : questions
+                
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 }
 module.exports = DbService;
