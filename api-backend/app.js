@@ -207,5 +207,30 @@ app.post('/admin/questionnaire_upd', (request, response) => {
      .then(data => response.json({ data: data}))
      .catch(err => console.log(err));
  });
+//reset all parameters of the system
+app.post('/admin/resetall', (request, response) => {
+    const { button_value} = request.body;
+    const db = dbService.getDbServiceInstance();
+    const result = db.resetAll();
+    result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err));
+});
+
+
+const Fs = require('fs/promises')
+app.post('/admin/questionnaire_upd', (request, response) => {
+    // const surveyID  = request.params.questionnaireID;
+    // const questionID  = request.params.questionID;
+     const {surID, surTitle,keywords,questions}  = request.body;
+    console.log('app js',surID,surTitle,keywords,questions[0].options.length);
+    //const json = Fs.readFile(file_content)  
+
+     const db = dbService.getDbServiceInstance();
+     const result = db.newSurveyJson(surID, surTitle,keywords,questions);
+     result
+     .then(data => response.json({ data: data}))
+     .catch(err => console.log(err));
+ });
 
 app.listen(5000, () => console.log('app is running'));

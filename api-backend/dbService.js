@@ -456,6 +456,95 @@ class DbService {
             console.log(error);
         }
     }
+    async resetAll() {
+        try {
+            const insertId53 = await new Promise((resolve, reject) => {
+                const query4 = "DELETE from answers_registered_users;";
+
+                connection.query(query4, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId53);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId5 = await new Promise((resolve, reject) => {
+                const query4 = "DELETE from session;";
+                connection.query(query4, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId53);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId6 = await new Promise((resolve, reject) => {
+                const query5 = "DELETE from values_storage;";
+                connection.query(query5, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId6);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId7 = await new Promise((resolve, reject) => {
+                const query6 = "DELETE from registered_users where roles = 'user';";
+                connection.query(query6, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId7);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId8 = await new Promise((resolve, reject) => {
+                const query7 = "DELETE from answers;";
+                connection.query(query7, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId8);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId11 = await new Promise((resolve, reject) => {
+                const query10 = "DELETE from questions_category;";
+                connection.query(query10, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId11);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId9 = await new Promise((resolve, reject) => {
+                const query8 = "DELETE from questions;";
+                connection.query(query8, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId9);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId10 = await new Promise((resolve, reject) => {
+                const query9 = "DELETE from survey;";
+                connection.query(query9, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId10);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId12 = await new Promise((resolve, reject) => {
+                const query11 = "DELETE from category;";
+                connection.query(query11, (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId12);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+
+
+            return {
+                status : 'OK',
+                reason : 42
+            };
+        } catch (error) {
+            return {
+                status : 'failed',
+                reason : error
+            }
+        }
+    }
+    
 
 }
 module.exports = DbService;
