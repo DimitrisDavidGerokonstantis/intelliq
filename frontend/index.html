@@ -25,21 +25,38 @@
         <br>
         <div>
         <button id="create-questionnaire-btn">Create Questionnaire</button>
-        <br><br><br><br><br><br>
+        <br><br>
+        <form id="upload">
+            <label for="file">Upload a JSON file with a new questionnaire: </label>
+            <input type="file" id="file" accept=".json">
+            <button>Upload</button>
+        </form>
+        <br><br>
         <button id="show-questionnaires-btn">Show Your Questionnaires</button>
-        <br><br><br><br><br><br>
+        <br><br>
+        <div class='button'>
+            <button id="health-btn">System Healthcheck</button>
+            </div>
+            <br>
         <button id="resetall-btn">Reset the system</button>
-
-        </div>
+        <br>
         <section hidden id="resetall_res">
             <div id = "resetall_result"></div>
         </section>
+        <br>
+        </div>
     </main>
     <script src="index.js"></script>
     <script>
         const getBtn = document.querySelector('#show-questionnaires-btn');
         getBtn.onclick = function (){
             location.replace('showQuestionnaires_admin.html');      
+        }
+    </script>
+    <script>
+        const healthBtn = document.querySelector('#health-btn');
+        healthBtn.onclick = function () {
+            location.replace('healthcheck.html')
         }
     </script>
     
