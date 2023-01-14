@@ -233,4 +233,26 @@ app.post('/admin/questionnaire_upd', (request, response) => {
      .catch(err => console.log(err));
  });
 
+
+app.get('/getsurveydetails/:questionnaireID', (request, response) => {
+    const questionnaireID  = request.params.questionnaireID;
+    const db = dbService.getDbServiceInstance();
+    const result = db.getSurveyDetails(questionnaireID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+});
+
+
+app.get('/getquestiondetails/:questionID', (request, response) => {
+    const questionID  = request.params.questionID;
+    const db = dbService.getDbServiceInstance();
+    const result = db.getQuestionDetails(questionID);
+    
+    result
+    .then(data => response.json({data : data}))
+    .catch(err => console.log(err));
+}); 
+
 app.listen(5000, () => console.log('app is running'));
