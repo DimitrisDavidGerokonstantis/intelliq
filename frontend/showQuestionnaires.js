@@ -237,3 +237,65 @@ function finish(helper){
         createSession(helper);
     }
 }
+
+function ShowDetails(surveyID) {
+    fetch('http://localhost:5000/getsurveydetails/' + surveyID, {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'GET'
+    })
+    .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
+    .then(data => loadDetailsHTMLTable(data['data']));
+}
+
+function loadDetailsHTMLTable(data) {
+    const table = document.querySelector('#showSurveys_main');
+    let tableHtml = "";
+    let counter = 0;
+    data.forEach(function ({surID, surTitle, surKey, queID, queTitle, required, qtype}) {  
+         if(counter==0) tableHtml += `<h1>Survey : (#${surID}) ${surTitle} | Keyword : ${surKey}</h1>`;
+         tableHtml += `<h3>(${queID}) ${queTitle} `;
+         if(required==1) tableHtml += `*`;
+         if(qtype==1) tableHtml += `(profile)`;
+         else tableHtml += `(question)`;
+         tableHtml += `<button id="${queID}" onclick="ShowQuestionDet(${queID})" value="${queID}">Question Details</button></h3>`;
+         counter++;
+ })
+    tableHtml += `<button onclick="Back()">Back</button>`;
+
+    table.innerHTML = tableHtml;
+}
+
+
+function ShowQuestionDet(questionID) {
+    fetch('http://localhost:5000/getquestiondetails/' + questionID, {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'GET'
+    })
+    .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
+    .then(data => loadQueDetHTMLTable(data['data']));
+}
+
+function loadQueDetHTMLTable(data) {
+    const table = document.querySelector('#showSurveys_main');
+    let tableHtml = "";
+    let counter = 0;
+    data.forEach(function ({surID, queID, queTitle, required, qtype, ansID, ansTitle, nextID}) {  
+         if(counter==0) {
+            tableHtml += `<h1>Question : (#${queID}) ${queTitle} `;
+            if(required==1) tableHtml += `*`;
+            if(qtype==1) tableHtml += `(profile)`;
+            else tableHtml += `(question)`;
+            tableHtml += `, of Survey #${surID}</h1>`;
+         }
+         tableHtml += `<h3>(${ansID}) ${ansTitle} | Next: ${nextID}</h3>`;
+         
+         counter++;
+ })
+    tableHtml += `<button onclick="Back()">Back</button>`;
+
+    table.innerHTML = tableHtml;
+}
