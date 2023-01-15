@@ -256,11 +256,11 @@ input[type=text] {
     color : rgb(220, 209, 236);
   }
 
-  #about_us_body{
+.about_us_body{
     background-color: rgb(16, 1, 22)
   }
 
-#about_us_page{      
+.about_us_page{      
   font-family: var(--FontSansSerif);       
 
   font-weight: bold;       
@@ -312,6 +312,10 @@ input[type=file]::file-selector-button:hover {
   background-color : #67515d
 }
 .lightMode input[type=text] {
+  background-color: #aaa0ab;
+  color : rgb(66, 61, 61);
+}
+.lightMode p {
   background-color: #aaa0ab;
   color : rgb(66, 61, 61);
 }
