@@ -22,7 +22,8 @@ function loadHTMLTable(data) {
         tableHtml += `<td>${title}</td>`;
         tableHtml += `<td>${keywords}</td>`;
         tableHtml += `<td><button id="${help_counter}" onclick="createSession(${id})" value="${id}">Answer</button>`;
-        tableHtml += `<button id="${help_counter}" onclick="ShowQuestions(${id})" value="${id}">Statistics</button></td>`;
+        tableHtml += `<button id="${help_counter}" onclick="ShowQuestions(${id})" value="${id}">Statistics</button>`;
+        tableHtml += `<button id="${id}" onclick="ShowDetails(${id})" value="${id}">Survey Details</button></h3></td>`;
         tableHtml += "</tr>";
         help_counter +=1;
         console.log(help_counter);
