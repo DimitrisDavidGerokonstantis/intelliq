@@ -298,3 +298,22 @@ input[type=file]::file-selector-button {
 input[type=file]::file-selector-button:hover {
   background: #5b04f3;
 }
+
+
+
+.lightMode {
+  background: #ccd6cd;
+  color : #2f053d
+}
+.lightMode tbody tr {
+  color : #ffffff
+}
+.lightMode .topnav {
+  background-color : #67515d
+}
+.lightMode input[type=text] {
+  background-color: #aaa0ab;
+  color : rgb(66, 61, 61);
+}
+
+

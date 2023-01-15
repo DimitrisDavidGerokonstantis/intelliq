@@ -70,7 +70,7 @@ class DbService {
         }
     }
 
-    async insertNewQuestion(title, answers_array, times, checkbox) {
+    async insertNewQuestion(title, answers_array, times, checkbox, qtype) {
         try {
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT id FROM survey ORDER BY id DESC LIMIT 0, 1;";
@@ -83,9 +83,9 @@ class DbService {
             });
          //  console.log('mplampla'); console.log(response[0].id);
             const insertId = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO questions(title, required, category_id, qtype, survey_id) VALUES (?,?, 1, TRUE, ?);";
+                const query = "INSERT INTO questions(title, required, category_id, qtype, survey_id) VALUES (?,?, 1, ?, ?);";
 
-                connection.query(query, [title,checkbox, response[0].id] , (err, result) => {
+                connection.query(query, [title,checkbox,qtype, response[0].id] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                     console.log(result.affectedRows + " record inserted");
@@ -147,7 +147,7 @@ class DbService {
                 })
             });
             const response = await new Promise((resolve, reject) => {
-                const query77 = "select que.id as qid, ans.id as ansid, que.title as qtitle, ans.title as anstitle, que.required as required from survey as sur inner join questions as que on que.survey_id=sur.id inner join answers as ans on ans.whose_question_id=que.id where sur.id=?;";
+                const query77 = "select que.id as qid, ans.id as ansid, que.title as qtitle, ans.title as anstitle, que.required as required, que.qtype as qtype from survey as sur inner join questions as que on que.survey_id=sur.id inner join answers as ans on ans.whose_question_id=que.id where sur.id=?;";
                 connection.query(query77, [response2[0].id] ,(err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);

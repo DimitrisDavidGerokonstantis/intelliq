@@ -14,10 +14,12 @@ function loadHTMLTable(data) {
     let tableHtml = "";
     let help_title="";
     var counter ;
-    data.forEach(function ({qtitle, anstitle,required, ansid, qid}) {       
+    data.forEach(function ({qtitle, anstitle,required, ansid, qid, qtype}) {       
         if(help_title!=qtitle){
             tableHtml += `<h2>(#${qid}) ${qtitle}`;
+            if(qtype === 1)tableHtml += ` (Profile)`;
             if(required === 1)tableHtml += ` *`;
+            
             counter = 0;
             tableHtml +=`</h2>`;
  

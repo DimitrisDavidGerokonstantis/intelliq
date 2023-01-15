@@ -42,7 +42,7 @@ function loadHTMLTable2(data) {
     data.forEach(function ({quesid, questitle,atitle, nextque, answerid, surid, sessID}) {       
            if(help_title!=questitle) tableHtml += `<h2>Question : ${questitle}</h2>`;
             tableHtml += "<h3>";
-            tableHtml += `<input type="radio" class="form-control" id="${answerid}" name="${surid}" value="${quesid}">`;
+            tableHtml += `<input type="radio" class="${nextque}" id="${answerid}" name="${surid}" value="${quesid}">`;
             tableHtml +=`<label for="html"> ${atitle}</label><br></br></h3>`
             help_title = questitle;
             if(nextque!=0)last=false;
@@ -63,7 +63,7 @@ function loadHTMLTable2(data) {
 
 
 function end(sessionID) {
-    var ele = document.getElementsByClassName('form-control');
+    var ele = document.querySelectorAll('input[type=radio]');
             for(i = 0; i < ele.length; i++) {
                 if(ele[i].checked){
                     
@@ -82,11 +82,13 @@ function end(sessionID) {
   //  location.replace('index.html');
 }
 function next_question(sessionID) {
-    var ele = document.getElementsByClassName('form-control');
+    var ele = document.querySelectorAll('input[type=radio]');
     console.log('ele',ele);
             for(i = 0; i < ele.length; i++) {
                 if(ele[i].checked){
-                    
+                    console.log('class',ele[i].class);
+                    if(ele[i].className==0)end(sessionID);
+                    else{
                     let option = ele[i].id;
                     fetch('http://localhost:5000/doanswer/'+(ele[i].name)+'/'+(ele[i].value)+'/'+ sessionID +'/'+(ele[i].id), {
                     headers: {
@@ -97,6 +99,7 @@ function next_question(sessionID) {
                     .then(response => response.json());
                     console.log('frontentd sessionID',sessionID);
                     myFunction2(option,sessionID);
+                }
                 }
             }
 }

@@ -31,6 +31,10 @@ nextBtn.onclick = function () {
     const checkbox = checkInput.checked;
     checkInput.checked = false;
 
+    const qtypeInput = document.querySelector('#checkbox-rect3');
+    const qtype = qtypeInput.checked;
+    qtypeInput.checked = false;
+
     var answers_array = [];
     var answerInput;
     var help;
@@ -56,7 +60,7 @@ nextBtn.onclick = function () {
             'Content-type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox})
+        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox, qtype:qtype})
     })
     .then(response => response.json())
    // .then(data => insertRowIntoTable(data['data']));
@@ -72,6 +76,10 @@ endBtn.onclick = function () {
     const checkInput = document.querySelector('#checkbox-rect2');
     const checkbox = checkInput.checked;
     checkInput.checked = false;
+    
+    const qtypeInput = document.querySelector('#checkbox-rect3');
+    const qtype = qtypeInput.checked;
+    qtypeInput.checked = false;
 
     var answers_array = [];
     var answerInput;
@@ -98,7 +106,7 @@ endBtn.onclick = function () {
             'Content-type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox})
+        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox, qtype:qtype})
     })
     .then(response => response.json())
    // .then(data => insertRowIntoTable(data['data']));

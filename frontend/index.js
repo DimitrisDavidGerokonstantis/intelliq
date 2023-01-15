@@ -162,3 +162,4 @@ function logFile (event) {
 })
 .then(response => response.json())
 }
+

@@ -44,9 +44,8 @@ function loadHTMLTable2(data) {
             tableHtml += `<input type="radio" class="form-control" id="${answerid}" name="${surid}" value="${quesid}">`;
             tableHtml +=`<label for="html"> ${atitle}</label><br></br></h3>`
             help_title = questitle;
-            if(nextque!=0)last=false;
+            if(nextque==0)last=false;
             sessionID = sessID;
-
     });
     if(last!=true){
         tableHtml +=`<div class='button'>`;
@@ -207,3 +206,4 @@ fr.onload=function(){
 //let formData = new FormData();
 //formData.append('file', file);
 //fetch('/admin/questionnaire_upd', {method: "POST", body: formData});
+

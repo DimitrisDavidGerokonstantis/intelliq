@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" id="page1">
     <div class="topnav">
-        <a class="active" >IntelliQ</a>
-        <a href="about.html">About</a>
+        <a class="active" href="index.html">IntelliQ</a>
         <a href="login.html">Log out</a>
+        <a href="" class="nav-item" id="toggle">🌞</a>
+
       </div>
       <h1>Create a new Survey </h1>
 <head>
@@ -29,7 +30,7 @@
         <form id="upload">
             <label for="file">Upload a JSON file with a new questionnaire: </label>
             <input type="file" id="file" accept=".json">
-            <button>Upload</button>
+            <button onclick="upload_message()">Upload</button>
         </form>
         <br><br>
         <button id="show-questionnaires-btn">Show Your Questionnaires</button>
@@ -60,6 +61,53 @@
         }
     </script>
     
+<script>
+
+function upload_message(){
+ alert('You have just uploaded a .json file with a new questionnaire');
+ location.reload();
+}
+</script>
+
+<script>
+    
+    console.log(localStorage.getItem('dark'));
+    var isLight ;
+    let checkbox = document.getElementById("toggle");
+    document.addEventListener('DOMContentLoaded', function () {
+        if(localStorage.getItem('dark')) {
+    modeSwitchToDark();checkbox.innerText = "🌞" ;
+    } 
+    else {modeSwitchToLight();checkbox.innerText = "🌞" ;checkbox.innerText = "🌚";}
+});
+
+checkbox.addEventListener( "click", function() {
+         if(localStorage.getItem('dark')){modeSwitchToLight();localStorage.removeItem('dark');}
+         else {modeSwitchToDark();localStorage.setItem('dark','dark');}}
+    );
+
+    
+
+function modeSwitchToLight() {
+  
+  let root = document.body;
+  
+  //isLight ? toggle.innerText = "Light/Dark" : toggle.innerText = "🌚";
+  root.classList.add("lightMode");
+  checkbox.innerText = "🌚";
+}
+function modeSwitchToDark() {
+  
+  let root = document.body;
+  
+  //isLight ? toggle.innerText = "Light/Dark" : toggle.innerText = "🌚";
+  root.classList.remove("lightMode");
+  checkbox.innerText = "🌞" ;
+  
+}
+    
+</script>
+
 </body>
 </html>
   
