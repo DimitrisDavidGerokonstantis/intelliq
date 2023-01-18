@@ -39,12 +39,12 @@ function loadHTMLTable2(data) {
     let help_title="";
     let last = true;
     var sessionID ;
-    tableHtml += `<h1>Answer that Question<h1>`;
+    tableHtml += `<div class="answ"><h1>Answer that Question<h1>`;
     data.forEach(function ({quesid, questitle,atitle, nextque, answerid, surid, sessID}) {       
            if(help_title!=questitle) tableHtml += `<h2>Question : ${questitle}</h2>`;
             tableHtml += "<h3>";
             tableHtml += `<input type="radio" class="${nextque}" id="${answerid}" name="${surid}" value="${quesid}">`;
-            tableHtml +=`<label for="html"> ${atitle}</label><br></br></h3>`
+            tableHtml +=`<label for="html"> ${atitle}</label><br></br></h3></div>`
             help_title = questitle;
             if(nextque!=0)last=false;
             sessionID = sessID;

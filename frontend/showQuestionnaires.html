@@ -4,7 +4,7 @@
         <a class="active" href="showQuestionnaires.html">IntelliQ</a>
         <a href="about.html">About</a>
         <a href="login.html">Log out</a>
-        <a href="" class="nav-item" id="toggle">🌞</a>
+       <div class = "sun"> <a class="nav-item" id="toggle">🌞</a></div>
       </div>
       
 <head>
@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="styles.css">
     <title>Questionnaires</title>
 </head>
-<body>
+<body class="prob1" id="prob">
     <main id="showSurveys_main">
         <h1>Surveys</h1>
         <div>
@@ -32,10 +32,9 @@
     <br><br>
  
 </main>
-    <script src="showQuestionnaires.js"></script>
+</body>
     <script>
-    
-    console.log(localStorage.getItem('dark'));
+   console.log(localStorage.getItem('dark'));
     var isLight ;
     let checkbox = document.getElementById("toggle");
     document.addEventListener('DOMContentLoaded', function () {
@@ -44,7 +43,6 @@
     } 
     else {modeSwitchToLight();checkbox.innerText = "🌞" ;checkbox.innerText = "🌚";}
 });
-
 checkbox.addEventListener( "click", function() {
          if(localStorage.getItem('dark')){modeSwitchToLight();localStorage.removeItem('dark');}
          else {modeSwitchToDark();localStorage.setItem('dark','dark');}}
@@ -72,5 +70,6 @@ function modeSwitchToDark() {
         
     </script>
     
-</body>
+    <script src="showQuestionnaires.js"></script>
+
 </html>
