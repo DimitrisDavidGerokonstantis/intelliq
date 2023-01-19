@@ -222,8 +222,11 @@ app.post('/admin/resetall', (request, response) => {
 app.post('/admin/questionnaire_upd', (request, response) => {
     // const surveyID  = request.params.questionnaireID;
     // const questionID  = request.params.questionID;
+ 
+
+
      const {surID, surTitle,keywords,questions}  = request.body;
-    console.log('app js',surID,surTitle,keywords,questions[0].options.length);
+    console.log('input',surID,surTitle,keywords,questions[0].options);
     //const json = Fs.readFile(file_content)  
 
      const db = dbService.getDbServiceInstance();
@@ -255,4 +258,19 @@ app.get('/getquestiondetails/:questionID', (request, response) => {
     .catch(err => console.log(err));
 }); 
 
+
+app.post('/admin/createUser', (request, response) => {
+    // const surveyID  = request.params.questionnaireID;
+    // const questionID  = request.params.questionID;
+    //const json = Fs.readFile(file_content)
+  //  const username = request.params.username;
+  //  const password = request.params.password;
+  const {username,password} = request.body;
+     const db = dbService.getDbServiceInstance();
+     const result = db.createUser(username, password);
+     result
+     .then(data => response.json({ data: data}))
+     .catch(err => console.log(err));
+ });
+ 
 app.listen(5000, () => console.log('app is running'));
