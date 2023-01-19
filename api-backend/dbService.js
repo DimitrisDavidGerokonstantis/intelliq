@@ -579,5 +579,27 @@ class DbService {
         }
     }
 
+    async createUser(username, password) {
+        try {
+            const insertId = await new Promise((resolve, reject) => {
+                const query = "INSERT INTO registered_users (email, pass_word, roles) VALUES (?, ?, 'user');";
+
+                connection.query(query, [username, password] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId);
+                    console.log(result.affectedRows + " record inserted");
+                })
+            });
+            return {
+                id : insertId,
+                username : username,
+                password : password
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 }
 module.exports = DbService;
