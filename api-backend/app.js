@@ -272,4 +272,14 @@ app.post('/admin/createUser', (request, response) => {
      .catch(err => console.log(err));
  });
 
+ //reset all parameters of a questionnaire
+app.post('/admin/resetq/:questionnaireID', (request, response) => {
+    const surveyID = request.params.questionnaireID;
+    const db = dbService.getDbServiceInstance();
+    const result = db.resetQuestionnaire(surveyID);
+    result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err));
+});
+
 app.listen(5000, () => console.log('app is running'));

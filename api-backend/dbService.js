@@ -600,6 +600,37 @@ class DbService {
         }
     }
 
+    async resetQuestionnaire(surveyID) {
+        try {
+            const insertId53 = await new Promise((resolve, reject) => {
+                const query4 = "delete from answers_registered_users where answers_id in(select ans.answers_id from answers_registered_users as ans inner join session as ses on ses.session_id = ans.session_id where ses.survey_id = ?);";
+
+                connection.query(query4, [surveyID], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId53);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId5 = await new Promise((resolve, reject) => {
+                const query4 = "DELETE from session where survey_id = ?;";
+                connection.query(query4, [surveyID], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId53);
+                    //console.log(result.affectedRows + " record inserted");
+                })
+            });
+
+            return {
+                status : 'OK',
+                reason : 42
+            };
+        } catch (error) {
+            return {
+                status : 'failed',
+                reason : error
+            }
+        }
+    }
 
 }
 module.exports = DbService;

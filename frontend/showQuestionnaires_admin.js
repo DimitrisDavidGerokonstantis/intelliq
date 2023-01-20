@@ -21,7 +21,8 @@ function loadHTMLTable(data) {
         tableHtml += `<td>${id}</td>`;
         tableHtml += `<td>${title}</td>`;
         tableHtml += `<td>${keywords}</td>`;
-        tableHtml += `<td><button id="${help_counter}" onclick="createSession(${id})" value="${id}">Edit</button></td>`;
+        tableHtml += `<td><button id="${help_counter}" onclick="createSession(${id})" value="${id}">Edit</button>`;
+        tableHtml += `<button id="${help_counter}" onclick="resetQuestionnaire(${id})" value="${id}">Reset</button></td>`;
         tableHtml += "</tr>";
         help_counter +=1;
         console.log(help_counter);
@@ -133,6 +134,46 @@ function myFunction2(option,sessionID) {
     .then(data => loadHTMLTable2(data['data']));
 
 }
+
+function resetQuestionnaire(surveyID) {
+    fetch('http://localhost:5000/admin/resetq/'+surveyID, {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'POST'
+    })
+    .then(response => response.json()).then(data => ShowMessage(data['data']));
+}
+
+function ShowMessage(Data) {
+   document.getElementById('showSurveys_main').innerHTML = "";
+   const bod = document.getElementById('showSurveys_main');
+   let tableHtml = "";
+   let boole = false;
+   if(Data.reason == 42) {boole = true};
+   if(boole == true){
+    Data = JSON.stringify(Data);
+    Data = Data.substring(Data, 14, -2);
+    tableHtml += `<h2>${Data}}</h2>`;
+    }
+    else {
+        Data = JSON.stringify(Data);
+        tableHtml += `<h2>${Data}</h2>`;
+    }
+   tableHtml += "<div class='button'></div>";
+   tableHtml += `<button id="bac" onclick="bac()">Back</button>`;
+   tableHtml += "</div>";
+
+   bod.innerHTML = tableHtml;
+    
+}
+
+function bac() {
+    location.replace('showQuestionnaires_admin.html');
+}
+
+
+
 
 /*const chooseBtn = document.querySelector('#choose-survey-btn');
 chooseBtn.onclick = function () {
