@@ -146,31 +146,37 @@ function resetQuestionnaire(surveyID) {
 }
 
 function ShowMessage(Data) {
-   document.getElementById('showSurveys_main').innerHTML = "";
-   const bod = document.getElementById('showSurveys_main');
-   let tableHtml = "";
+  // document.getElementById('showSurveys_main').innerHTML = "";
+   //const bod = document.getElementById('showSurveys_main');
+  // let tableHtml = "";
    let boole = false;
    if(Data.reason == 42) {boole = true};
    if(boole == true){
     Data = JSON.stringify(Data);
     Data = Data.substring(Data, 14, -2);
-    tableHtml += `<h2>${Data}}</h2>`;
+   // tableHtml += `<h2>${Data}}</h2>`;
     }
     else {
         Data = JSON.stringify(Data);
-        tableHtml += `<h2>${Data}</h2>`;
+      //  tableHtml += `<h2>${Data}</h2>`;
     }
-   tableHtml += "<div class='button'></div>";
-   tableHtml += `<button id="bac" onclick="bac()">Back</button>`;
-   tableHtml += "</div>";
+    if(confirm(`${Data}} :  All answers for this questionnaire have been reset!`)){
+        location.replace('showQuestionnaires_admin.html');
+        }
+        else{ 
+            location.replace('showQuestionnaires_admin.html');
+        }
+  // tableHtml += "<div class='button'></div>";
+  // tableHtml += `<button id="bac" onclick="bac()">Back</button>`;
+ //  tableHtml += "</div>";
 
-   bod.innerHTML = tableHtml;
+ //  bod.innerHTML = tableHtml;
     
 }
 
-function bac() {
-    location.replace('showQuestionnaires_admin.html');
-}
+//function bac() {
+//    location.replace('showQuestionnaires_admin.html');
+//}
 
 
 
