@@ -15,7 +15,10 @@
   "bin": {
     "getsessionanswers": "getsessionanswers.js",
     "getquestionanswers": "getquestionanswers.js",
-    "questionnaire_upd": "questionnaire_upd.js"
+    "questionnaire_upd": "questionnaire_upd.js",
+    "healthcheck": "healthcheck.js",
+    "resetall": "resetall.js",
+    "resetq": "resetq.js"
   },
   "description": ""
 }
