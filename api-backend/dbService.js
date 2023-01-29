@@ -23,8 +23,8 @@ connection.connect((err) => {
         console.log(err.message);
     }
      console.log('db ' + connection.state);
-     console.log('connected' == connection.state);
-     console.log('{"status":"OK", "dbconnection":[Server=' + (connection.config.host)+':5000' + ',3306;' + ' Database=' + connection.config.database+';'+' User Id='+ connection.config.user + ';'+' Password='+connection.config.password+';]}');
+    // console.log('connected' == connection.state);
+    // console.log('{"status":"OK", "dbconnection":[Server=' + (connection.config.host)+':5000' + ',3306;' + ' Database=' + connection.config.database+';'+' User Id='+ connection.config.user + ';'+' Password='+connection.config.password+';]}');
 });
 
 class DbService {
