@@ -83,8 +83,16 @@ app.get('/answer_survey/:sesID/:surID', (request, response) => {
     const result = db.getRequestedSurvey(survID,sessID);
     
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+    
+
+    function status(data){
+        //console.log(data);
+        if(data.length==0)response.status(404).send('Not Found');
+        else response.status(200).json({data : data});
+    }
+    
 });
 
 //answer survey
@@ -94,8 +102,15 @@ app.post('/create_session/:value', (request, response) => {
     const result = db.createNewSession(surveyID);
     
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+    
+
+    function status(data){
+        //console.log(data.length);
+        if(data.length==0)response.status(400).send('Bad Request');
+        else response.status(200).json({data : data});
+    }
 });
 
 
@@ -106,8 +121,15 @@ app.get('/next_question/:option/:sessionID', (request, response) => {
     const result = db.getNextQuestion(opt,sessionID);
     
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+    
+
+    function status(data){
+        //console.log(data.length);
+        if(data.length==0)response.status(404).send('Not Found');
+        else response.status(200).json({data : data});
+    }
 });
 
 
@@ -126,15 +148,23 @@ app.post('/doanswer/:questionnaireID/:questionID/:session/:optionID', (request, 
    // const surveyID  = request.params.questionnaireID;
    // const questionID  = request.params.questionID;
     const sessionID  = request.params.session;
-    console.log('session',sessionID);
+    //console.log('session',sessionID);
     
     const optionID  = request.params.optionID;
-    console.log('option',optionID);
+    //console.log('option',optionID);
     const db = dbService.getDbServiceInstance();
     const result = db.SaveGivenAnswer(sessionID,optionID);
     result
-    .then(data => response.json({ data: data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+    
+
+    function status(data){
+        //console.log(data);
+        if(data.length==0)response.status(400).send('Bad Request');
+        else response.status(200).json({data : data});
+    }
+
 });
 
 app.get('/login/:email/:pass', (request, response) => {
@@ -150,8 +180,8 @@ app.get('/login/:email/:pass', (request, response) => {
 
     function status(data){
        // console.log(data.length);
-        if(data.length==0)response.status(400).json({data : data});
-        else response.status(200).send('Found');
+        if(data.length==0)response.status(404).send('Not Found');
+        else response.status(200).json({data : data});
     }
     
 });
