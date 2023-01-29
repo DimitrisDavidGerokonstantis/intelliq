@@ -22,6 +22,9 @@ connection.connect((err) => {
     if (err) {
         console.log(err.message);
     }
+    // console.log('db ' + connection.state);
+    // console.log('connected' == connection.state);
+    //console.log('{"status":"OK", "dbconnection":[Server=' + (connection.config.host)+':5000' + ',3306;' + ' Database=' + connection.config.database+';'+' User Id='+ connection.config.user + ';'+' Password='+connection.config.password+';]}');
      console.log('db ' + connection.state);
     // console.log('connected' == connection.state);
     // console.log('{"status":"OK", "dbconnection":[Server=' + (connection.config.host)+':5000' + ',3306;' + ' Database=' + connection.config.database+';'+' User Id='+ connection.config.user + ';'+' Password='+connection.config.password+';]}');
@@ -231,7 +234,7 @@ class DbService {
                     resolve(results);   
                 })
             });
-            console.log(insertId23);
+            //console.log(insertId23);
             return insertId23;
         } catch (error) {
             console.log(error);

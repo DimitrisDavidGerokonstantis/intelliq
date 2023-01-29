@@ -8,7 +8,12 @@ loginBtn.onclick = function () {
     const passwordInput = document.querySelector('#password');
     const password = passwordInput.value;
     passwordInput.value = "";
+    Validation(email,password);
+}
 
+
+function Validation(email,password){
+    let adm = false;
     fetch('http://localhost:5000/login'+'/'+email+'/'+password, {
         headers: {
             'Content-type': 'application/json'
@@ -22,18 +27,25 @@ loginBtn.onclick = function () {
         const wrong = document.querySelector('#wrong_credentials');
         console.log(JSON.stringify(data));
         if(JSON.stringify(data) === '[]'){
-            
-            wrong.hidden = false;  
+            wrong.hidden = false;
+              
     }
         else {
             let role = data[0].roles;
-            if(role == 'user'){
+          
+            if(role == 'user'){ 
                 location.replace('showQuestionnaires.html');
+                
             }
             else if(role == 'admin'){
+                adm = true;
                 location.replace('index.html');
+                
+                
             }
         }
     }
+
    // .then(data => insertRowIntoTable(data['data']));
 }
+
