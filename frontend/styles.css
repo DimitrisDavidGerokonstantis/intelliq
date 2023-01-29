@@ -345,7 +345,7 @@ select {
 
 .select {
   position: absolute;
-        top: 40%;
+        top: 42%;
         left: 50%;
         margin-right: -50%;
         transform: translate(-50%, -50%);
@@ -356,5 +356,13 @@ select {
   overflow: hidden;
   border-radius: .25em;
   padding-bottom: 10px;
+}
+
+#header1{
+  position: absolute;
+        top: 40%;
+        left: 35%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
 }
 

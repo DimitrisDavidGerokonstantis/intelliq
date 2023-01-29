@@ -22,9 +22,9 @@ submitBtn.onclick = function () {
 const nextBtn = document.querySelector('#next-question-btn');
 console.log("frontend");
 nextBtn.onclick = function () {
-    location.replace('createQuestionnaire.html');
+  //  location.replace('createQuestionnaire.html');
     const titleInput = document.querySelector('#title');
-    const title = titleInput.value;
+    let title = titleInput.value;
     titleInput.value = "";
 
     const checkInput = document.querySelector('#checkbox-rect2');
@@ -39,6 +39,17 @@ nextBtn.onclick = function () {
     const category = e.value;
     e.value = "";
 
+    if(title.length == 0) {
+        title = ' ';
+        if(confirm('Title field cannot be empty')){
+            location.replace('createQuestionnaire.html');
+           }
+           else{ 
+                location.replace('createQuestionnaire.html');
+            }
+    }
+    else{
+    location.replace('createQuestionnaire.html');
     var answers_array = [];
     var answerInput;
     var help;
@@ -69,12 +80,13 @@ nextBtn.onclick = function () {
     .then(response => response.json())
    // .then(data => insertRowIntoTable(data['data']));
 }
+}
 
 const endBtn = document.querySelector('#end-btn');
 endBtn.onclick = function () {
-    location.replace('surveySummary.html');
+  //  location.replace('surveySummary.html');
     const titleInput = document.querySelector('#title');
-    const title = titleInput.value;
+    let title = titleInput.value;
     titleInput.value = "";
 
     const checkInput = document.querySelector('#checkbox-rect2');
@@ -89,6 +101,17 @@ endBtn.onclick = function () {
     const category = e.value;
     e.value = "";
 
+    if(title.length == 0) {
+        title = ' ';
+        if(confirm('Title field cannot be empty')){
+            location.replace('createQuestionnaire.html');
+           }
+           else{ 
+                location.replace('createQuestionnaire.html');
+            }
+    }
+    else{
+    location.replace('surveySummary.html');
     var answers_array = [];
     var answerInput;
     var help;
@@ -118,6 +141,7 @@ endBtn.onclick = function () {
     })
     .then(response => response.json())
    // .then(data => insertRowIntoTable(data['data']));
+}
 }
 
 

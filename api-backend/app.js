@@ -15,6 +15,12 @@ app.use(express.urlencoded({ extended : false }));
 //create new questionnaire
 app.post('/insert', (request, response) => {
     const { title, keyword } = request.body;
+  //  console.log('title', title);
+    var len;
+    if(title == ' ') {len = true; response.status(400).send('Bad request');}
+    else{
+        len = false;
+   // console.log(len);
     const db = dbService.getDbServiceInstance();
    // console.log(title);
     const result = db.insertNewQuestionnaire(title, keyword);
@@ -23,8 +29,14 @@ app.post('/insert', (request, response) => {
   //  console.log(result);
    // console.log(result.keyword);
     result
-    .then(data => response.json({ data: data}))
+    .then(data => status(data, len))
     .catch(err => console.log(err));
+   }
+    function status(data, len){
+        // console.log(data.length);
+         if(len==true)response.status(400).send('Bad request');
+         else response.status(200).json({data : data});
+     }
 });
 
 //show all questionnaires
@@ -40,16 +52,25 @@ app.get('/getAllQuestionnaires', (request, response) => {
 //create new question
 app.post('/addQuestion', (request, response) => {
     const { title, answers_array, times, checkbox, qtype, category} = request.body;
+    var len;
+    if(title == ' ') len = true;
+    else len = false;
     const db = dbService.getDbServiceInstance();
     //console.log('times');console.log(times);
-    console.log('request.body');console.log(request.body);
+  //  console.log('request.body');console.log(request.body);
    // console.log(request.message);
   //  const message = request.locals;
     const result = db.insertNewQuestion(title, answers_array, times, checkbox, qtype, category);
     
     result
-    .then(data => response.json({ data: data}))
+    .then(data => status(data, len))
     .catch(err => console.log(err));
+
+    function status(data, len){
+        // console.log(data.length);
+         if(len==true)response.status(400).send('Bad request');
+         else response.status(200).json({data : data});
+     }
 });
 
 
@@ -150,8 +171,8 @@ app.get('/login/:email/:pass', (request, response) => {
 
     function status(data){
        // console.log(data.length);
-        if(data.length==0)response.status(400).json({data : data});
-        else response.status(200).send('Found');
+        if(data.length==0)response.status(400).send('Not Found');
+        else response.status(200).json({data : data});
     }
     
 });

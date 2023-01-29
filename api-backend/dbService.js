@@ -60,7 +60,7 @@ class DbService {
                 connection.query(query, [title, keyword] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
-                    console.log(result.affectedRows + " record inserted");
+             //       console.log(result.affectedRows + " record inserted");
                 })
             });
             return {
@@ -101,7 +101,7 @@ class DbService {
                 connection.query(query, [title,checkbox, resp[0].id, qtype, response[0].id] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
-                    console.log(result.affectedRows + " record inserted");
+                 //   console.log(result.affectedRows + " record inserted");
                 })
             }); //console.log('insertId');console.log(insertId);//console.log(insertId);
              /*const insertId2 = await new Promise((resolve, reject) => {
@@ -131,7 +131,7 @@ class DbService {
                     connection.query(query2, [answers_array[i],insertId] , (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result.insertId2);
-                        console.log(result.affectedRows + " record inserted");
+                    //    console.log(result.affectedRows + " record inserted");
                     }) 
                 });
                 insertId2_array.push(insertId2);
@@ -536,15 +536,6 @@ class DbService {
                     //console.log(result.affectedRows + " record inserted");
                 })
             });
-            const insertId12 = await new Promise((resolve, reject) => {
-                const query11 = "DELETE from category;";
-                connection.query(query11, (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result.insertId12);
-                    //console.log(result.affectedRows + " record inserted");
-                })
-            });
-
 
             return {
                 status : 'OK',
