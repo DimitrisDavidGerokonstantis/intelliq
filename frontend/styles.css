@@ -329,3 +329,32 @@ input[type=file]::file-selector-button:hover {
   color : rgb(66, 61, 61);
 }
 
+select {
+  appearance: none;
+  outline: 0;
+  background: rgb(177, 140, 140);
+  background-image: none;
+  width: 100%;
+  height: 100%;
+  color: black;
+  cursor: pointer;
+  margin-right: 20px;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.select {
+  position: absolute;
+        top: 40%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+  display: block;
+  width: 15em;
+  height: 2em;
+  line-height: 3;
+  overflow: hidden;
+  border-radius: .25em;
+  padding-bottom: 10px;
+}
+

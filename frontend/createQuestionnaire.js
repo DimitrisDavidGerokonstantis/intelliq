@@ -35,6 +35,10 @@ nextBtn.onclick = function () {
     const qtype = qtypeInput.checked;
     qtypeInput.checked = false;
 
+    const e = document.getElementById("ddlViewBy");
+    const category = e.value;
+    e.value = "";
+
     var answers_array = [];
     var answerInput;
     var help;
@@ -60,7 +64,7 @@ nextBtn.onclick = function () {
             'Content-type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox, qtype:qtype})
+        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox, qtype:qtype, category : category})
     })
     .then(response => response.json())
    // .then(data => insertRowIntoTable(data['data']));
@@ -81,6 +85,10 @@ endBtn.onclick = function () {
     const qtype = qtypeInput.checked;
     qtypeInput.checked = false;
 
+    const e = document.getElementById("ddlViewBy");
+    const category = e.value;
+    e.value = "";
+
     var answers_array = [];
     var answerInput;
     var help;
@@ -106,7 +114,7 @@ endBtn.onclick = function () {
             'Content-type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox, qtype:qtype})
+        body: JSON.stringify({ title : title, answers_array : answers_array, times:times, checkbox:checkbox, qtype:qtype, category : category})
     })
     .then(response => response.json())
    // .then(data => insertRowIntoTable(data['data']));

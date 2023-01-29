@@ -70,7 +70,7 @@ class DbService {
         }
     }
 
-    async insertNewQuestion(title, answers_array, times, checkbox, qtype) {
+    async insertNewQuestion(title, answers_array, times, checkbox, qtype, category) {
         try {
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT id FROM survey ORDER BY id DESC LIMIT 0, 1;";
@@ -81,11 +81,21 @@ class DbService {
                   //  console.log(result.affectedRows + " record inserted");
                 })
             });
+
+            const resp = await new Promise((resolve, reject) => {
+                const query = "SELECT id FROM category where title = ?;";
+
+                connection.query(query, [category], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                  //  console.log(result.affectedRows + " record inserted");
+                })
+            });
          //  console.log('mplampla'); console.log(response[0].id);
             const insertId = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO questions(title, required, category_id, qtype, survey_id) VALUES (?,?, 1, ?, ?);";
+                const query = "INSERT INTO questions(title, required, category_id, qtype, survey_id) VALUES (?,?, ?, ?, ?);";
 
-                connection.query(query, [title,checkbox,qtype, response[0].id] , (err, result) => {
+                connection.query(query, [title,checkbox, resp[0].id, qtype, response[0].id] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                     console.log(result.affectedRows + " record inserted");
@@ -195,7 +205,7 @@ class DbService {
             });
 
             const response69 = await new Promise((resolve, reject) => {
-                const query88 = "select ? as sessID ,que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque, ans.id as answerid, sur.id as surid from questions as que inner join answers as ans on que.id=ans.whose_question_id inner join survey as sur on sur.id=que.survey_id where que.id=?;";
+                const query88 = "select ? as sessID ,que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque, ans.id as answerid, sur.id as surid, cat.title as cattitle from questions as que inner join answers as ans on que.id=ans.whose_question_id inner join survey as sur on sur.id=que.survey_id inner join category as cat on cat.id=que.category_id where que.id=?;";
 
                 connection.query(query88, [sessID,response45[0].queid], (err,results) => {
                     if (err) reject(new Error(err.message));
@@ -204,7 +214,7 @@ class DbService {
                 })
             });
 
-            //console.log(response69);
+          //  console.log(response69);
             return response69;
         } catch (error) {
             console.log(error);
@@ -264,7 +274,7 @@ class DbService {
             });
 
             const response70 = await new Promise((resolve, reject) => {
-                const query89 = "select ? as sessID, que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque, ans.id as answerid, sur.id as surid from questions as que inner join answers as ans on que.id=ans.whose_question_id inner join survey as sur on sur.id=que.survey_id where que.id=?;";
+                const query89 = "select ? as sessID, que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque, ans.id as answerid, sur.id as surid, cat.title as cattitle from questions as que inner join answers as ans on que.id=ans.whose_question_id inner join survey as sur on sur.id=que.survey_id inner join category as cat on cat.id=que.category_id where que.id=?;";
 
                 connection.query(query89, [sessionID,response12[0].nextq], (err,results) => {
                     if (err) reject(new Error(err.message));

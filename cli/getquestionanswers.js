@@ -53,7 +53,7 @@ axios.get(url,{
        .join("\n");
     if(format=='json')console.log(answers);
     if(format=='csv')console.log(csvString);
-    if(format!='json' && format!='csv') console.log('Uknown Format');
+    if(format!='json' && format!='csv') console.log('Unknown Format');
 })
 .catch(err => {
     console.log(err);

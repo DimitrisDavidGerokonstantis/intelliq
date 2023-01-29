@@ -39,13 +39,13 @@ app.get('/getAllQuestionnaires', (request, response) => {
 
 //create new question
 app.post('/addQuestion', (request, response) => {
-    const { title, answers_array, times, checkbox, qtype} = request.body;
+    const { title, answers_array, times, checkbox, qtype, category} = request.body;
     const db = dbService.getDbServiceInstance();
     //console.log('times');console.log(times);
     console.log('request.body');console.log(request.body);
    // console.log(request.message);
   //  const message = request.locals;
-    const result = db.insertNewQuestion(title, answers_array, times, checkbox, qtype);
+    const result = db.insertNewQuestion(title, answers_array, times, checkbox, qtype, category);
     
     result
     .then(data => response.json({ data: data}))
