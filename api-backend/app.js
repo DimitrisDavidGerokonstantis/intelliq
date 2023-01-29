@@ -142,10 +142,17 @@ app.get('/login/:email/:pass', (request, response) => {
     const password  = request.params.pass;
     const db = dbService.getDbServiceInstance();
     const result = db.checkCredentials(email,password);
-    
+
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+    
+
+    function status(data){
+       // console.log(data.length);
+        if(data.length==0)response.status(400).json({data : data});
+        else response.status(200).send('Found');
+    }
     
 });
 
@@ -282,4 +289,5 @@ app.post('/admin/resetq/:questionnaireID', (request, response) => {
     .catch(err => console.log(err));
 });
 
-app.listen(5000, () => console.log('app is running'));
+let server = app.listen(5000, () => console.log('app is running'));
+module.exports = server;
