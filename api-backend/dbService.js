@@ -377,16 +377,17 @@ class DbService {
             
     async getSummary(sessionID, questionnaireID) {
         try {
+            let error = false;
             const response87 = await new Promise((resolve, reject) => {
                 const query101 = "select que.title as quetitle,que.survey_id as quesid, ans.title as anstitle from answers_registered_users as an inner join answers as ans on an.answers_id = ans.id inner join questions as que on que.id = ans.whose_question_id where session_id = ? and que.survey_id = ?;"
 
                 connection.query(query101,[sessionID, questionnaireID] ,(err,results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);
+                    if (err) error=true;
+                    if(!err)resolve(results); else resolve();
                   //  console.log(result.affectedRows + " record inserted");
                 })
             });
-            return response87;
+            return !error?response87:[];
         } catch (error) {
             console.log(error);
         }

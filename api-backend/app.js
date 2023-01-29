@@ -193,8 +193,15 @@ app.get('/getsessionanswers/:questionnaireID/:session', (request, response) => {
     const result = db.getSummary(sessionID, questionnaireID);
     
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+    
+
+    function status(data){
+       // console.log(data.length);
+        if(data.length==0)response.status(404).send('Not Found');
+        else response.status(200).json({data : data});
+    }
 });
 
 

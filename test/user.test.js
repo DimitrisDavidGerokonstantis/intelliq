@@ -5,7 +5,7 @@ let chaiHttp = require('chai-http');
 let server = require('../api-backend/app');
 let should = chai.should();
 
-let selected_Survey_ID = 61;
+let selected_Survey_ID = 60;
 
 chai.use(chaiHttp);
 //Our parent block
@@ -59,8 +59,9 @@ describe('/answer_survey/:sesID/:surID', () => {
   });
 });
 let selected_option = -1 ;
+//console.log(created_session);
 describe('/doanswer/:questionnaireID/:questionID/:session/:optionID', () => {
-  it('it should save a specific answer of a specific question of a specific questionnaire in a specific session', (done) => {
+  it('it should save a specific answer of a specific question of questionnaire '+selected_Survey_ID +' in a specific session' , (done) => {
     const doAnswer = {
       surID: selected_Survey_ID,
       queID : 300,
@@ -116,6 +117,22 @@ describe('/doanswer/:questionnaireID/:questionID/:session/:optionID', () => {
             let j = JSON.parse(res.res.text);
             selected_option = j.data.optionID;
           }
+              res.should.have.status(200);
+          done();
+        });
+  });
+});
+
+
+describe('/getsessionanswers/:questionnaireID/:session', () => {
+  it('it should bring the summary', (done) => {
+    const survey = {
+      ID: selected_Survey_ID,
+      sesID:created_session
+    }
+    chai.request(server)
+        .get('/getsessionanswers/'+survey.ID+'/'+survey.sesID)
+        .end((err, res) => {
               res.should.have.status(200);
           done();
         });
