@@ -1,8 +1,20 @@
+//const { response } = require("express");
+
 const addBtn = document.querySelector('#create-questionnaire-btn');
 console.log("kara");
 addBtn.onclick = function () {
     const titleInput = document.querySelector('#title');
-    const title = titleInput.value;
+    let title = titleInput.value;
+    if(title.length == 0) {
+        title = ' ';
+        if(confirm('Title field cannot be empty')){
+            location.replace('index.html');
+           }
+           else{ 
+                location.replace('index.html');
+            }
+    }
+    else{
     titleInput.value = "";
 
     const keywordInput = document.querySelector('#keyword');
@@ -15,9 +27,10 @@ addBtn.onclick = function () {
         method: 'POST',
         body: JSON.stringify({ title : title, keyword : keyword})
     })
-    .then(response => response.json());
+    .then(response => response.json())
     location.replace('createQuestionnaire.html');
    // .then(data => insertRowIntoTable(data['data']));
+}
 }
 
 const resetBtn = document.querySelector('#resetall-btn');
