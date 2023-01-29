@@ -21,6 +21,7 @@
     "resetq": "resetq.js",
     "question": "question.js",
     "doanswer": "doanswer.js"
+    "questionnaire": "questionnaire.js"
   },
   "description": ""
 }
