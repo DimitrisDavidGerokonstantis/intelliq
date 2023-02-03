@@ -642,5 +642,38 @@ class DbService {
         }
     }
 
+    async CliSaveGivenAnswer(surveyID,sessionID,optionID) {
+        /// later: function to check if the given sessionID already exists OR trigger in database
+        try {
+            const insertId99 = await new Promise((resolve, reject) => {
+                const query99 = "INSERT INTO session (session_id,survey_id, registered_users_id) VALUES (?,?, 1);";
+                connection.query(query99, [sessionID,surveyID] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId99);
+                    console.log(result.affectedRows + " record inserted");
+                })
+            });
+            const insertId115 = await new Promise((resolve, reject) => {
+                const query115 = "INSERT INTO answers_registered_users (answers_id,registered_users_id,session_id) VALUES (?,?, ?);";
+
+                connection.query(query115, [optionID, 1, sessionID] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insertId115);
+                    console.log(result.affectedRows + " record inserted");
+                })
+            });
+
+            return {
+                status : 'OK',
+                reason : 42
+            };
+        } catch (error) {
+            return {
+                status : 'failed',
+                reason : error
+            }
+        }
+    }
+
 }
 module.exports = DbService;

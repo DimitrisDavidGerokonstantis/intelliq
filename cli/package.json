@@ -19,7 +19,10 @@
     "questionnaire_upd": "questionnaire_upd.js",
     "healthcheck": "healthcheck.js",
     "resetall": "resetall.js",
-    "resetq": "resetq.js"
+    "resetq": "resetq.js",
+    "question": "question.js",
+    "doanswer": "doanswer.js",
+    "questionnaire": "questionnaire.js"
   },
   "description": ""
 }
