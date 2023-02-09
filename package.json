@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ntua/SoftEng22-17#readme",
   "dependencies": {
+    "@jsdevtools/chai-exec": "^2.1.1",
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",

@@ -229,16 +229,16 @@ class DbService {
     
     async checkCredentials(email,password) {
         try {
-            
+            let error = false;
             const insertId23 = await new Promise((resolve, reject) => {
                 const query888 = "select roles from registered_users where email=? and pass_word=?;"
                 connection.query(query888,[email,password] ,(err, results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);   
+                    if (err) error=true;
+                    if(!err)resolve(results); else resolve();
                 })
             });
             //console.log(insertId23);
-            return insertId23;
+            return (!error)? insertId23 : [];
         } catch (error) {
             console.log(error);
         }
@@ -346,16 +346,16 @@ class DbService {
         
     async getSurveysQuestions(questionnaireID) {
         try {
-            
+            let error = false;
             const insertId23 = await new Promise((resolve, reject) => {
                 const query888 = "select sur.title as surTitle, que.title as queTitle, que.id as queID, sur.id as surID from survey as sur inner join questions as que on que.survey_id=sur.id where sur.id=?;"
                 connection.query(query888,[questionnaireID] ,(err, results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);   
+                    if (err) error=true;
+                    if(!err)resolve(results); else resolve();  
                 })
             });
             console.log(insertId23);
-            return insertId23;
+            return (!error)? insertId23 : [];
         } catch (error) {
             console.log(error);
         }
@@ -566,7 +566,6 @@ class DbService {
                     resolve(results);
                 })
             });
-            // console.log(response);
             return response;
         } catch (error) {
             console.log(error);
@@ -575,16 +574,17 @@ class DbService {
 
     async getQuestionDetails(questionID) {
         try {
+            let error = false;
             const response = await new Promise((resolve, reject) => {
                 const query = "select survey_id as surID, que.id as queID, que.title as queTitle, required, qtype, ans.id as ansID, ans.title as ansTitle, next_question_id as nextID from questions as que inner join answers as ans on que.id = whose_question_id where que.id = ? ;";
 
                 connection.query(query, [questionID], (err, results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);
+                    if (err) error=true;
+                    if(!err)resolve(results); else resolve();
                 })
             });
             // console.log(response);
-            return response;
+            return (!error)? response : [];
         } catch (error) {
             console.log(error);
         }
