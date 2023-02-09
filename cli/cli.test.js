@@ -64,9 +64,9 @@ describe("CLI_Testing", () => {
 
   });
 
-  it("Reset answer data of a specific questionnaire \n\tCOMMAND : resetq --questionnaire_id 60 --format json", () => {
+  it("Reset answer data of a specific questionnaire \n\tCOMMAND : resetq --questionnaire_id 100 --format json", () => {
     // Run your CLI
-    let myCLI = chaiExec('resetq --questionnaire_id 60 --format json');
+    let myCLI = chaiExec('resetq --questionnaire_id 100 --format json');
 
     // Should syntax
  // Should syntax
@@ -78,7 +78,7 @@ describe("CLI_Testing", () => {
 
   it("Show all questions of a specific questionnaire \n\tCOMMAND: questionnaire --questionnaire_id 100 --format json", () => {
     // Run your CLI
-    let myCLI = chaiExec('questionnaire --questionnaire_id 60 --format json');
+    let myCLI = chaiExec('questionnaire --questionnaire_id 100 --format json');
 
    chai.expect(myCLI.exitCode).to.equal(200); 
 
@@ -86,9 +86,9 @@ describe("CLI_Testing", () => {
 
 
 
-    it("Show all answers of a specific question of a questionnaire \n\tCOMMAND: question --questionnaire_id 60 --question_id 300 --format json", () => {
+    it("Show all answers of a specific question of a questionnaire \n\tCOMMAND: question --questionnaire_id 100 --question_id 101 --format json", () => {
       // Run your CLI
-      let myCLI = chaiExec('question --questionnaire_id 60 --question_id 300 --format json');
+      let myCLI = chaiExec('question --questionnaire_id 100 --question_id 101 --format json');
   
      chai.expect(myCLI.exitCode).to.equal(200); 
   
