@@ -6,7 +6,7 @@ chai.use(chaiExec);
 
 describe("CLI_Testing", () => {
 
-  it("Upload a json file with a new questionnaire with id=100 : \n\t COMMAND : questionnaire_upd --source example4.json", () => {
+  it("Upload a json file with a new questionnaire with id=100 :\n\t COMMAND : questionnaire_upd --source example4.json", () => {
     // Run your CLI
     let myCLI = chaiExec('questionnaire_upd --source example4.json');
 
