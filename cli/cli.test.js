@@ -29,7 +29,7 @@ describe("CLI_Testing", () => {
   });
 
 
-  it("Get all given answers in a specific question of a specific questionnaire. \n\tCOMMAND : getquestionanswers --questionnaire_id 60 --question_id 300 --format json", () => {
+  it("Get all given answers in a specific question of a specific questionnaire. \n\tCOMMAND : getquestionanswers --questionnaire_id 100 --question_id 300 --format json", () => {
     // Run your CLI
     let myCLI = chaiExec('getquestionanswers --questionnaire_id 100 --question_id 101 --format json');
 
