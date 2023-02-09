@@ -5,7 +5,7 @@ const axios = require('axios').default;
 
 yargs.command(
     'questionnaire', // Command name, plus a positional argument message
-    'Get all questionnaires', // Command description for --help  
+    'Get all questions of a specific questionnaire', // Command description for --help  
      );
 
 yargs.positional('questionnaire_id', { describe: 'Identifier of the questionnaire'});
@@ -52,8 +52,11 @@ else {
     if(format=='json')console.log(answers);
     if(format=='csv')console.log(csvString);
     if(format!='json' && format!='csv') console.log('Unknown Format');
+    console.log(response.status);
+    process.exitCode = response.status;
 })
-.catch(err => {
+.catch((err) => {
+    process.exitCode = 404;
     console.log(err);
 })
 }

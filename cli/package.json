@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "cli_test.js"
+    "test": "mocha cli.test.js"
   },
   "keywords": [],
   "author": "",

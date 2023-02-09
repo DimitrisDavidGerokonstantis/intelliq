@@ -253,8 +253,10 @@ app.get('/admin/healthcheck', (request, response) => {
     const result = db.getHealthcheck();
     
     result
-    .then(data => response.json({data : data}))
-    .catch(err => console.log(err));
+    .then(data => response.status(200).json({data : data}))
+    .catch(err => {
+        response.status(400);
+    });
     //console.log(result);
 });
 
@@ -278,8 +280,10 @@ app.post('/admin/resetall', (request, response) => {
     const db = dbService.getDbServiceInstance();
     const result = db.resetAll();
     result
-    .then(data => response.json({ data: data}))
-    .catch(err => console.log(err));
+    .then(data => response.status(200).json({ data: data}))
+    .catch(err => {
+        response.status(400);
+    });
 });
 
 
@@ -308,8 +312,13 @@ app.get('/getsurveydetails/:questionnaireID', (request, response) => {
     const result = db.getSurveyDetails(questionnaireID);
     
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+
+    function status(data){
+         if(data.length==0)response.status(404).send('Not Found');
+         else response.status(200).json({data : data});
+     }
 });
 
 
@@ -319,8 +328,13 @@ app.get('/getquestiondetails/:questionID', (request, response) => {
     const result = db.getQuestionDetails(questionID);
     
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
+
+    function status(data){
+        if(data.length==0)response.status(404).send('Not Found');
+        else response.status(200).json({data : data});
+    }
 }); 
 
 app.post('/admin/createUser', (request, response) => {
@@ -343,8 +357,10 @@ app.post('/admin/resetq/:questionnaireID', (request, response) => {
     const db = dbService.getDbServiceInstance();
     const result = db.resetQuestionnaire(surveyID);
     result
-    .then(data => response.json({ data: data}))
-    .catch(err => console.log(err));
+    .then(data => response.status(200).json({ data: data}))
+    .catch(err => {
+        response.status(400);
+    });
 });
 
 

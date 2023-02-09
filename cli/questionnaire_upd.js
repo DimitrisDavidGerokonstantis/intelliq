@@ -7,8 +7,8 @@ const axios = require('axios').default;
 
 
 yargs.command(
-    'getsessionanswers', // Command name, plus a positional argument message
-    'Get all questions΄ answers in a given session', // Command description for --help  
+    'questionnaire_upd', // Command name, plus a positional argument message
+    'Post a new questionnaire', // Command description for --help  
      );
 
  yargs.positional('questionnaire_id', { describe: 'Identifier of the questionnaire'});

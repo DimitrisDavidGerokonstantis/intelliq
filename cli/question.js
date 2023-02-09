@@ -55,8 +55,10 @@ else{
     if(format=='json')console.log(answers);
     if(format=='csv')console.log(csvString);
     if(format!='json' && format!='csv') console.log('Unknown Format');
+    process.exitCode = response.status;
 })
 .catch(err => {
+    process.exitCode = 404;
     console.log(err);
 })
 }
