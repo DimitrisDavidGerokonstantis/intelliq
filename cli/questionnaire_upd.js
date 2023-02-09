@@ -8,11 +8,10 @@ const axios = require('axios').default;
 
 yargs.command(
     'questionnaire_upd', // Command name, plus a positional argument message
-    'Post a new questionnaire', // Command description for --help  
+    'Upload a json file with a new questionnaire with id=100', // Command description for --help  
      );
 
- yargs.positional('questionnaire_id', { describe: 'Identifier of the questionnaire'});
- yargs.positional('session_id', { describe: 'Identifier of the session'});      
+ yargs.positional('source', { describe: 'name of the json source file'});    
 
 
 let argv = yargs.argv;
@@ -24,6 +23,7 @@ const fs = require("fs");
 fs.readFile(source, "utf8", (err, jsonString) => {
   if (err) {
     console.log("Error reading file from disk:", err);
+    process.exitCode=400;
     return;
   }
   try {
@@ -36,7 +36,8 @@ fs.readFile(source, "utf8", (err, jsonString) => {
     questions :customer.questions
 })
  .then((response)=> {
-      console.log('Survey Added') 
+      console.log('Survey Added');
+      process.exitCode=response.status; 
   })
   .catch((error)=> {
       console.log('Error on adding the new questionnaire. This questionnaire may have already been added or the server does not work properly');

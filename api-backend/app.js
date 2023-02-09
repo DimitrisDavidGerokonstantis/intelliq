@@ -243,9 +243,15 @@ app.get('/getquestionanswers/:questionnaireID/:questionID', (request, response) 
     const result = db.getStatistics(questionID);
     
     result
-    .then(data => response.json({data : data}))
+    .then(data => status(data))
     .catch(err => console.log(err));
     
+
+    function status(data){
+       // console.log(data.length);
+        if(data.length==0)response.status(404).send('Not Found');
+        else response.status(200).json({data : data});
+    }
 });
 
 app.get('/admin/healthcheck', (request, response) => {
@@ -300,9 +306,18 @@ app.post('/admin/questionnaire_upd', (request, response) => {
 
      const db = dbService.getDbServiceInstance();
      const result = db.newSurveyJson(surID, surTitle,keywords,questions);
+
      result
-     .then(data => response.json({ data: data}))
+     .then(data => status(data))
      .catch(err => console.log(err));
+     
+ 
+     function status(data){
+        // console.log(data.length);
+         if(data.length==0)response.status(400).send('Bad Request');
+         else response.status(200).json({data : data});
+     }
+
  });
 
 
@@ -379,8 +394,16 @@ app.post('/cli/doanswer/:questionnaireID/:questionID/:session/:optionID', (reque
      const db = dbService.getDbServiceInstance();
      const result = db.CliSaveGivenAnswer(surveyID,sessionID,optionID);
      result
-     .then(data => response.json({ data: data}))
+     .then(data => status(data))
      .catch(err => console.log(err));
+     
+ 
+     function status(data){
+         //console.log(data.length);
+         if(data.length==0)response.status(400).send('Bad Request');
+         else response.status(200).json({data : data});
+     }
+
  });
 
 
