@@ -1,3 +1,4 @@
+/*When the page is loaded, all questionnaires are brought and displayed as a table */
 document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:5000/getAllQuestionnaires')
     .then(response => response.json())
@@ -6,9 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 var help_counter = 0;
+/* Load data and display them in a table format */
 function loadHTMLTable(data) {
     const table = document.querySelector('table tbody');
 
+    //in case of no questionnaires:
     if (data.length === 0) {
         table.innerHTML = "<tr><td class='no-data' colspan='3'>No Data</td></tr>";
         return;
@@ -16,6 +19,7 @@ function loadHTMLTable(data) {
 
     let tableHtml = "";
 
+    //create one row for each stored questionnaire and the necessary buttons for each one
     data.forEach(function ({id, title, keywords}) {
         tableHtml += "<tr>";
         tableHtml += `<td>${id}</td>`;
@@ -25,14 +29,13 @@ function loadHTMLTable(data) {
         tableHtml += `<button id="${help_counter}" onclick="resetQuestionnaire(${id})" value="${id}">Reset</button></td>`;
         tableHtml += "</tr>";
         help_counter +=1;
-        console.log(help_counter);
     });
 
     table.innerHTML = tableHtml;
 }
 
-
-function loadHTMLTable2(data) {
+/* Load the question and display it to the user for the data that it has been called for */
+function loadQuestion(data) {
     const main = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let help_title="";
@@ -48,19 +51,23 @@ function loadHTMLTable2(data) {
             if(nextque==0)last=false;
             sessionID = sessID;
     });
+    //display a next button if we are not talking about the last question
     if(last!=true){
         tableHtml +=`<div class='button'>`;
         tableHtml += `<button id="next-question-btn" onclick="next_question('${sessionID}')">Next</button>`;
-        tableHtml +=`</div>`;}
+        tableHtml +=`</div>`;
+    }
+    //display an end button if we are talking about the last question
     else {
         tableHtml +=`<div class='button'>`;
         tableHtml += `<button id="end-answer-btn" onclick="end('${sessionID}')">End</button>`;
-        tableHtml +=`</div>`;}
+        tableHtml +=`</div>`;
+    }
 
     main.innerHTML = tableHtml;
 }
 
-
+//On click of the end button after answering the last question this function is called to submit the answer
 function end(sessionID) {
     var ele = document.getElementsByClassName('form-control');
             for(i = 0; i < ele.length; i++) {
@@ -77,11 +84,12 @@ function end(sessionID) {
                 }
                     
             }
-    location.replace('index.html');
+    location.replace('index.html');   //we have finished answering the questionnaire
 }
+
+//On click of the next button after answering a specific question this function is called to submit the answer
 function next_question(sessionID) {
     var ele = document.getElementsByClassName('form-control');
-    console.log('ele',ele);
             for(i = 0; i < ele.length; i++) {
                 if(ele[i].checked){
                     
@@ -93,12 +101,12 @@ function next_question(sessionID) {
                     method: 'POST'
                     })
                     .then(response => response.json());
-                    console.log('frontentd sessionID',sessionID);
-                    myFunction2(option,sessionID);
+                    FindNextQuestion(option,sessionID);           //function called to find the next question that needs to appear
                 }
             }
 }
 
+//On click of the answer button. It creates a new session for the user to answer the questionnaire
 function createSession(surveyID) {
     fetch('http://localhost:5000/create_session/'+surveyID, {
         headers: {
@@ -108,8 +116,9 @@ function createSession(surveyID) {
     })
     .then(response => response.json()).then(data => GetFirstQuestion(data['data']));
 }
+
+/* It brings the first question of the selected questionnaire for the user to answer */
 function GetFirstQuestion(Data) {
-    console.log('Data');console.log(Data);
     let sesID = Data.session_id;
     let survID = Data.survID;
 
@@ -120,10 +129,11 @@ function GetFirstQuestion(Data) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable2(data['data']));
+    .then(data => loadQuestion(data['data']));
 }
 
-function myFunction2(option,sessionID) {
+//find the next question to be answered according to the selected answer and the determined flow
+function FindNextQuestion(option,sessionID) {
     fetch('http://localhost:5000/next_question/'+option+'/'+sessionID, {
         headers: {
             'Content-type': 'application/json'
@@ -131,10 +141,11 @@ function myFunction2(option,sessionID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable2(data['data']));
+    .then(data => loadQuestion(data['data']));   //display the question to the user
 
 }
 
+//On click of the reset button for a specific questionnaire. It resets all answer data from this specific questionnaire
 function resetQuestionnaire(surveyID) {
     fetch('http://localhost:5000/admin/resetq/'+surveyID, {
         headers: {
@@ -146,111 +157,21 @@ function resetQuestionnaire(surveyID) {
 }
 
 function ShowMessage(Data) {
-  // document.getElementById('showSurveys_main').innerHTML = "";
-   //const bod = document.getElementById('showSurveys_main');
-  // let tableHtml = "";
    let boole = false;
-   if(Data.reason == 42) {boole = true};
+   if(Data.reason == 42) {boole = true};   //checking if the deletion went good
    if(boole == true){
-    Data = JSON.stringify(Data);
+    Data = JSON.stringify(Data);           //show JSON object to the admin
     Data = Data.substring(Data, 14, -2);
-   // tableHtml += `<h2>${Data}}</h2>`;
     }
     else {
         Data = JSON.stringify(Data);
-      //  tableHtml += `<h2>${Data}</h2>`;
     }
+    //confirm message that the data have been reset
     if(confirm(`${Data}} :  All answers for this questionnaire have been reset!`)){
         location.replace('showQuestionnaires_admin.html');
         }
         else{ 
             location.replace('showQuestionnaires_admin.html');
         }
-  // tableHtml += "<div class='button'></div>";
-  // tableHtml += `<button id="bac" onclick="bac()">Back</button>`;
- //  tableHtml += "</div>";
-
- //  bod.innerHTML = tableHtml;
-    
 }
-
-//function bac() {
-//    location.replace('showQuestionnaires_admin.html');
-//}
-
-
-
-
-/*const chooseBtn = document.querySelector('#choose-survey-btn');
-chooseBtn.onclick = function () {
-
-    let button_value = document.getElementById("choose-survey-btn").value;
-    fetch('http://localhost:5000/answer_survey', {
-        headers: {
-            'Content-type': 'application/json'
-        },
-        method: 'GET',
-        body: JSON.stringify({ button_value:button_value})
-    })
-    .then(response => response.json());
-    location.replace('answerSurvey.html');
-   // .then(data => insertRowIntoTable(data['data']));
-}*/
-
-
-
-//const fileSelector = document.getElementById('myFile');
-/*document.getElementById('myFile')
-.addEventListener('change', function() {
-  
-var fr=new FileReader();
-fr.readAsText(this.files[0]);
-fr.onload=function(){
-            fetch('http://localhost:5000/admin/questionnaire_upd', {
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                method: 'POST',
-                body: fr.result
-            })
-            .then(response => response.json())
-    console.log('fr.result',fr.result);
-}
-  
-})*/
-
-
-/*ileSelector.addEventListener('change', (event) => {
-  const fileList = event.target.files;
-  console.log(fileList);
-  fetch('http://localhost:5000/admin/questionnaire_upd', {
-    headers: {
-        'Content-type': 'application/json'
-    },
-    method: 'POST',
-    body: ({fileList : fileList})
-})
-.then(response => response.json())
-});*/
-
-
-    /*const reader = new FileReader();
-    reader.addEventListener('load', (event) => {
-      json.src = event.target.result;cd 
-    });
-    let ffile = reader.readAsDataURL(fileSelector);
-    
-    fetch('http://localhost:5000/admin/questionnaire_upd', {
-    headers: {
-        'Content-type': 'application/json'
-    },
-    method: 'POST',
-    body: ({ffile : ffile})
-})
-.then(response => response.json())*/
-  
-//let file = document.getElementById('input').files[0];
-//let formData = new FormData();
-//formData.append('file', file);
-//fetch('/admin/questionnaire_upd', {method: "POST", body: formData});
 

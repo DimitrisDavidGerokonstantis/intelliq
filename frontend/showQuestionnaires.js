@@ -1,3 +1,4 @@
+/*When the page is loaded, all questionnaires are brought and displayed as a table */
 document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:5000/getAllQuestionnaires')
     .then(response => response.json())
@@ -6,9 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 var help_counter = 0;
+/* Load data and display them in a table format */
 function loadHTMLTable(data) {
     const table = document.querySelector('table tbody');
 
+    //in case of no questionnaires:
     if (data.length === 0) {
         table.innerHTML = "<tr><td class='no-data' colspan='3'>No Data</td></tr>";
         return;
@@ -16,6 +19,7 @@ function loadHTMLTable(data) {
 
     let tableHtml = "";
 
+    //create one row for each stored questionnaire and the necessary buttons for each one
     data.forEach(function ({id, title, keywords}) {
         tableHtml += "<tr>";
         tableHtml += `<td>${id}</td>`;
@@ -26,14 +30,13 @@ function loadHTMLTable(data) {
         tableHtml += `<button id="${id}" onclick="ShowDetails(${id})" value="${id}">Survey Details</button></h3></td>`;
         tableHtml += "</tr>";
         help_counter +=1;
-        console.log(help_counter);
     });
 
     table.innerHTML = tableHtml;
 }
 
-
-function loadHTMLTable2(data) {
+/* Load the question and display it to the user for the data that it has been called for */
+function loadQuestion(data) {
     const main = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let help_title="";
@@ -50,19 +53,23 @@ function loadHTMLTable2(data) {
             sessionID = sessID;
 
     });
+    //display a next button if we are not talking about the last question
     if(last!=true){
         tableHtml +=`<div class='button'>`;
         tableHtml += `<button id="next-question-btn" onclick="next_question('${sessionID}')">Next</button>`;
-        tableHtml +=`</div>`;}
+        tableHtml +=`</div>`;
+    }
+    //display an end button if we are talking about the last question
     else {
         tableHtml +=`<div class='button'>`;
         tableHtml += `<button id="end-answer-btn" onclick="end('${sessionID}')">End</button>`;
-        tableHtml +=`</div>`;}
+        tableHtml +=`</div>`;
+    }
 
     main.innerHTML = tableHtml;
 }
 
-
+//On click of the end button after answering the last question this function is called to submit the answer
 function end(sessionID) {
     var ele = document.querySelectorAll('input[type=radio]');
             for(i = 0; i < ele.length; i++) {
@@ -75,16 +82,16 @@ function end(sessionID) {
                     method: 'POST'
                     })
                     .then(response => response.json())
-                    MyFunction3(sessionID, ele[i].name);
+                    Summary(sessionID, ele[i].name);   //going on to show summary of selected answers
                     
                 }
                     
             }
-  //  location.replace('index.html');
 }
+
+//On click of the next button after answering a specific question this function is called to submit the answer
 function next_question(sessionID) {
     var ele = document.querySelectorAll('input[type=radio]');
-    console.log('ele',ele);
             for(i = 0; i < ele.length; i++) {
                 if(ele[i].checked){
                     console.log('class',ele[i].class);
@@ -98,13 +105,13 @@ function next_question(sessionID) {
                     method: 'POST'
                     })
                     .then(response => response.json());
-                    console.log('frontentd sessionID',sessionID);
-                    myFunction2(option,sessionID);
+                    FindNextQuestion(option,sessionID);                //function called to find the next question that needs to appear
                 }
                 }
             }
 }
 
+//On click of the answer button. It creates a new session for the user to answer the questionnaire
 function createSession(surveyID) {
     fetch('http://localhost:5000/create_session/'+surveyID, {
         headers: {
@@ -114,8 +121,9 @@ function createSession(surveyID) {
     })
     .then(response => response.json()).then(data => GetFirstQuestion(data['data']));
 }
+
+/* It brings the first question of the selected questionnaire for the user to answer */
 function GetFirstQuestion(Data) {
-    console.log('Data');console.log(Data);
     let sesID = Data.session_id;
     let survID = Data.survID;
 
@@ -126,10 +134,11 @@ function GetFirstQuestion(Data) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable2(data['data']));
+    .then(data => loadQuestion(data['data']));
 }
 
-function myFunction2(option,sessionID) {
+//find the next question to be answered according to the selected answer and the determined flow
+function FindNextQuestion(option,sessionID) {
     fetch('http://localhost:5000/next_question/'+option+'/'+sessionID, {
         headers: {
             'Content-type': 'application/json'
@@ -137,11 +146,12 @@ function myFunction2(option,sessionID) {
         method: 'GET'  
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable2(data['data']));
+    .then(data => loadQuestion(data['data']));   //display the question to the user
 
 }
 
-function MyFunction3(sessionID, survey_id) {
+/* Collect all answers given in this given session to show a summary of them to the user */
+function Summary(sessionID, survey_id) {
     //console.log(survey_id);
     fetch('http://localhost:5000/getsessionanswers/'+survey_id+'/'+sessionID, {
         headers: {
@@ -150,8 +160,11 @@ function MyFunction3(sessionID, survey_id) {
         method: 'GET'  
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable3(data['data']));
+    .then(data => DisplaySummary(data['data']));   //display the summary to the user
 }
+
+//On press of the Statistics button. Shows a list of the questions of this questionnaire to pick one.
+//The responsible endpoint gets the data asked for. 
 function ShowQuestions(questionnaireID) {
     fetch('http://localhost:5000/getquestionanswers/' + questionnaireID, {
         headers: {
@@ -160,13 +173,15 @@ function ShowQuestions(questionnaireID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable13(data['data']));
+    .then(data => QuestionStat(data['data']));  //display the questions of this questionnaire to the user
 }
 
-function loadHTMLTable13(data) {
+// display the questions to the user. The user then chooses a question to check its statistics. 
+function QuestionStat(data) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0 ;
+    //Iteratively display each question with its button
     data.forEach(function ({surTitle, queTitle, queID, surID}) {  
          if(counter==0)tableHtml += `<h1>Survey : ${surTitle}</h1>`;     
          tableHtml += `<h3>${queTitle}  `;
@@ -179,7 +194,7 @@ function loadHTMLTable13(data) {
 }
 
 
-
+//Fetch statistics for the selected question (on click of the See Statistics button)
 function Statistics(questionID,questionnaireID) {
     fetch('http://localhost:5000/getquestionanswers/' + questionnaireID +'/' + questionID, {
         headers: {
@@ -188,30 +203,39 @@ function Statistics(questionID,questionnaireID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadHTMLTable4(data['data']));
+    .then(data => DisplayQuestionStatistics(data['data']));   //display the results to the user with this function
 }
 
-function loadHTMLTable4(data) {
+//Display the question statistics to the user
+function DisplayQuestionStatistics(data) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0;
     data.forEach(function ({Survey, Session, Question,AnswerTitle, Time}) {  
-        if(counter==0) {tableHtml += `<h1>${Survey} : `;tableHtml += `${Question}</h1>`;}
+        if(counter==0) {
+            tableHtml += `<h1>${Survey} : `;
+            tableHtml += `${Question}</h1>`;
+        }
          tableHtml += `<h3>Session : ${Session}   |   Answer : ${AnswerTitle} (Time :${Time})</h3><br> `;
          counter++;
  });
 
     if(counter!=0)tableHtml += `<button onclick="Back()">Back</button>`;
-    else {tableHtml += `<br><br><br><h1>No Data</h1>`;tableHtml += `<br><br><br><br><button onclick="Back()">Back</button>`;}
+    else {
+        tableHtml += `<br><br><br><h1>No Data</h1>`;
+        tableHtml += `<br><br><br><br><button onclick="Back()">Back</button>`;
+    }
     table.innerHTML = tableHtml;
 }
 
+//Back button after checking statistics of a question
 function Back(){
     location.replace('showQuestionnaires.html');
 }
 
 let helper;
-function loadHTMLTable3(data) {
+//Show the summary of selected answers to the user
+function DisplaySummary(data) {
     const main = document.querySelector('#showSurveys_main');
     let counter = 1;
     let tableHtml = "";
@@ -229,6 +253,7 @@ function loadHTMLTable3(data) {
     main.innerHTML = tableHtml;
 }
 
+//On click of the finish button, display a confirm message
 function finish(helper){
     console.log("helper: ", helper);
     if(confirm('Your Questionnaire has been submitted! If you wish to answer another one click OK. If you wish to reanswer this one click "Cancel"')){
@@ -239,6 +264,7 @@ function finish(helper){
     }
 }
 
+//Fetch details (questions) of the chosen questionnaire
 function ShowDetails(surveyID) {
     fetch('http://localhost:5000/getsurveydetails/' + surveyID, {
         headers: {
@@ -247,10 +273,11 @@ function ShowDetails(surveyID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadDetailsHTMLTable(data['data']));
+    .then(data => loadSurveyDetails(data['data']));   //display the data to the user
 }
 
-function loadDetailsHTMLTable(data) {
+//Display all questions of a questionnaire with their details and button to choose a specific question
+function loadSurveyDetails(data) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0;
@@ -268,7 +295,7 @@ function loadDetailsHTMLTable(data) {
     table.innerHTML = tableHtml;
 }
 
-
+//Fetch selected questions' answers and their details
 function ShowQuestionDet(questionID) {
     fetch('http://localhost:5000/getquestiondetails/' + questionID, {
         headers: {
@@ -277,10 +304,11 @@ function ShowQuestionDet(questionID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => loadQueDetHTMLTable(data['data']));
+    .then(data => loadQueDet(data['data']));   //display data to the user
 }
 
-function loadQueDetHTMLTable(data) {
+//Display answers' details of a chosen question to the user
+function loadQueDet(data) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0;
