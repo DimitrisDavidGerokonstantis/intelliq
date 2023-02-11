@@ -7,10 +7,10 @@ where each answer given by the user leads to a different question. This project 
 ##  Features   
 Our application offers the user an extensive UI (frontend) where he/she can choose a questionnaire, answer it and also  
 check details about a specific questionnaire. We have also developed an interactive user interface for the admin of the  
-system, where he/she can create new questionnaires (or uplaod them directly in a JSON format), and perform other    
+system, where he/she can create new questionnaires (or upload them directly in a JSON format), and perform other    
 administrative actions (healthcheck, reset the system, reset answers of a specific questionnaire etc -more details in the  
-README file of the frontend). We have also developed a CLI tool, that the administrator can use to perform all of these  
-actions, using CLI commands. Our project provides documentation done with Visual Paradigm and Postman and both the API and   
+README file of the frontend). We have also developed a CLI tool, that the administrator can use to perform all of these    
+actions, using CLI commands. Our project provides documentation done with Visual Paradigm and Postman and both the API and     
 the CLI have been tested.     
 
 ##  Programming Languages/Frameworks used   
