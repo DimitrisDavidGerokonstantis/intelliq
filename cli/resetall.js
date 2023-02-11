@@ -3,15 +3,16 @@
 const yargs = require('yargs');
 const axios = require('axios').default;
 
+yargs.command(
+  'resetall', // Command name, plus a positional argument message
+  'Attention! This command deletes all info currently stored in the database. Everything (including questionnaires) will be lost. The only thing that remains are admin accounts. ', // Command description for --help  
+   );
+
+yargs.positional('format', { describe: 'Define the format of the result (json or csv)'});  
 
 let argv = yargs.argv;
 let format = argv.format;
-yargs.command(
-    'resetall', // Command name, plus a positional argument message
-    'Attention! This command deletes all info currently stored in the database. Everything (including questionnaires) will be lost. The only thing that remains are admin accounts. ', // Command description for --help  
-     );
 
-yargs.positional('format', { describe: 'Define the format of the result (json or csv)'});  
 
 if(((process.argv.length - 2)/2) != 1){
   console.log('Some arguments missing. Use --help argument to check the documentation of the command');
