@@ -6,7 +6,7 @@ const axios = require('axios').default;
 
 yargs.command(
     'doanswer', // Command name, plus a positional argument message
-    'Post the aswerID of a specific question of a questionnaire in a given session', // Command description for --help  
+    'Post the answerID of a specific question of a questionnaire in a given session', // Command description for --help  
     );
 
 yargs.positional('questionnaire_id', { describe: 'Identifier of the questionnaire'});
@@ -32,9 +32,11 @@ else{
     //optionID : admin.questionnaireTitle,
 })
     .then((response) => {
+        process.exitCode = response.status;
         console.log('Answer Added')})
     
     .catch((error)=> {
+        process.exitCode = 400;
         console.log('Error on adding the new answer: Tried to add an already existing sessionID or the server does not work properly');
     })
 }

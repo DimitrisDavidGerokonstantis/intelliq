@@ -4,6 +4,13 @@ const yargs = require('yargs');
 const axios = require('axios').default;
 
 
+yargs.command(
+  'healthcheck', // Command name, plus a positional argument message
+  'This command returns the current status of the server (whether it is running or not plus database info)', // Command description for --help  
+   );
+
+yargs.positional('format', { describe: 'Define the format of the result (json or csv)'}); 
+
 let argv = yargs.argv;
 let format = argv.format;
 yargs.command(
@@ -50,8 +57,14 @@ axios.get(url,{
     if(format=='json')console.log(answers);
     if(format=='csv')console.log(csvString);
     if(format!='json' && format!='csv') console.log('Unknown Format');
+    process.exitCode = response.status;
 })
+/*.then(
+  process.exitCode = 200
+  ) */
 .catch(err => {
+  process.exitCode = 400;
     console.log(err);
 })
+
 }

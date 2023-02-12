@@ -49,12 +49,14 @@
     </main>
     <script src="index.js"></script>
     <script>
+        /*Button to see all questionnaires (load showQuestionnaires_admin.html page)*/
         const getBtn = document.querySelector('#show-questionnaires-btn');
         getBtn.onclick = function (){
             location.replace('showQuestionnaires_admin.html');      
         }
     </script>
     <script>
+        /*Button to perform healthcheck to the system*/
         const healthBtn = document.querySelector('#health-btn');
         healthBtn.onclick = function () {
             location.replace('healthcheck.html')
@@ -62,7 +64,7 @@
     </script>
     
 <script>
-
+//message shown when the user uploads a JSON file (new questionnaire)
 function upload_message(){
  alert('You have just uploaded a .json file with a new questionnaire');
  location.reload();
@@ -70,21 +72,32 @@ function upload_message(){
 </script>
 
 <script>
-    
+    /* Implementation of switch between dark and light mode */
     console.log(localStorage.getItem('dark'));
     var isLight ;
     let checkbox = document.getElementById("toggle");
     document.addEventListener('DOMContentLoaded', function () {
         if(localStorage.getItem('dark')) {
-    modeSwitchToDark();checkbox.innerText = "🌞" ;
-    } 
-    else {modeSwitchToLight();checkbox.innerText = "🌞" ;checkbox.innerText = "🌚";}
+           modeSwitchToDark();
+           checkbox.innerText = "🌞" ;
+        } 
+    else {
+        modeSwitchToLight();
+        checkbox.innerText = "🌞" ;
+        checkbox.innerText = "🌚";
+    }
 });
 
 checkbox.addEventListener( "click", function() {
-         if(localStorage.getItem('dark')){modeSwitchToLight();localStorage.removeItem('dark');}
-         else {modeSwitchToDark();localStorage.setItem('dark','dark');}}
-    );
+         if(localStorage.getItem('dark')){
+            modeSwitchToLight();
+            localStorage.removeItem('dark');
+        }
+         else {
+            modeSwitchToDark();
+            localStorage.setItem('dark','dark');
+        }
+    });
 
     
 

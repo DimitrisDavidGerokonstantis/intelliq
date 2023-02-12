@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>add question</title>
+    <title>add question</title>       
 </head>
 <body>
     <main>
@@ -57,21 +57,31 @@
     <script src="createQuestionnaire.js"></script>
 
     <script>
-    
+    /* Implementation of switch between dark and light mode */
     console.log(localStorage.getItem('dark'));
     var isLight ;
     let checkbox = document.getElementById("toggle");
     document.addEventListener('DOMContentLoaded', function () {
         if(localStorage.getItem('dark')) {
-    modeSwitchToDark();checkbox.innerText = "🌞" ;
-    } 
-    else {modeSwitchToLight();checkbox.innerText = "🌞" ;checkbox.innerText = "🌚";}
+           modeSwitchToDark();
+           checkbox.innerText = "🌞" ;
+        } 
+    else {
+      modeSwitchToLight();
+      checkbox.innerText = "🌞" ;
+      checkbox.innerText = "🌚";
+    }
 });
 
 checkbox.addEventListener( "click", function() {
-         if(localStorage.getItem('dark')){modeSwitchToLight();localStorage.removeItem('dark');}
-         else {modeSwitchToDark();localStorage.setItem('dark','dark');}}
-    );
+         if(localStorage.getItem('dark')){
+              modeSwitchToLight();localStorage.removeItem('dark');
+         }
+         else {
+          modeSwitchToDark();
+          localStorage.setItem('dark','dark');
+        }
+});
 
     
 

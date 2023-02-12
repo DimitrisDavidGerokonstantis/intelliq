@@ -36,6 +36,7 @@
 </main>
     <script src="showQuestionnaires_admin.js"></script>
     <script>
+        /*Button to go back to the admin home page*/
         const backBtn = document.querySelector('#back-btn');
         backBtn.onclick = function () {
             location.replace('index.html')
@@ -43,20 +44,32 @@
     </script>
 
 <script>
+    /* Implementation of switch between dark and light mode */
     console.log(localStorage.getItem('dark'));
     var isLight ;
     let checkbox = document.getElementById("toggle");
     document.addEventListener('DOMContentLoaded', function () {
         if(localStorage.getItem('dark')) {
-    modeSwitchToDark();checkbox.innerText = "🌞" ;
-    } 
-    else {modeSwitchToLight();checkbox.innerText = "🌞" ;checkbox.innerText = "🌚";}
+              modeSwitchToDark();
+              checkbox.innerText = "🌞" ;
+        } 
+        else {
+            modeSwitchToLight();
+            checkbox.innerText = "🌞" ;
+            checkbox.innerText = "🌚";
+        }
 });
 
 checkbox.addEventListener( "click", function() {
-         if(localStorage.getItem('dark')){modeSwitchToLight();localStorage.removeItem('dark');}
-         else {modeSwitchToDark();localStorage.setItem('dark','dark');}}
-    );
+         if(localStorage.getItem('dark')){
+            modeSwitchToLight();
+            localStorage.removeItem('dark');
+        }
+         else {
+            modeSwitchToDark();
+            localStorage.setItem('dark','dark');
+        }
+    });
 
     
 
@@ -68,6 +81,7 @@ function modeSwitchToLight() {
   root.classList.add("lightMode");
   checkbox.innerText = "🌚";
 }
+
 function modeSwitchToDark() {
   
   let root = document.body;

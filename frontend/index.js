@@ -1,40 +1,46 @@
-//const { response } = require("express");
+/* Button to add a new questionnaire after defining its title and keyword */
 
 const addBtn = document.querySelector('#create-questionnaire-btn');
-console.log("kara");
 addBtn.onclick = function () {
     const titleInput = document.querySelector('#title');
     let title = titleInput.value;
+
+    //Warning to the user that title input can't be empty
     if(title.length == 0) {
         title = ' ';
         if(confirm('Title field cannot be empty')){
             location.replace('index.html');
-           }
-           else{ 
-                location.replace('index.html');
-            }
+        }
+        else{ 
+            location.replace('index.html');
+        }
     }
-    else{
-    titleInput.value = "";
 
-    const keywordInput = document.querySelector('#keyword');
-    const keyword = keywordInput.value;
-    keywordInput.value = "";
-    fetch('http://localhost:5000/insert', {
+    else{
+     titleInput.value = "";
+
+     const keywordInput = document.querySelector('#keyword');
+     const keyword = keywordInput.value;
+     keywordInput.value = "";
+
+     //Call the responsible API route in order to create a new questionnaire with the input given
+     fetch('http://localhost:5000/insert', {
         headers: {
             'Content-type': 'application/json'
         },
         method: 'POST',
         body: JSON.stringify({ title : title, keyword : keyword})
-    })
-    .then(response => response.json())
-    location.replace('createQuestionnaire.html');
-   // .then(data => insertRowIntoTable(data['data']));
-}
+     })
+     .then(response => response.json())
+     location.replace('createQuestionnaire.html');    //move on to start adding questions 
+                                                      //to the newly created questionnaire
+   }
 }
 
+/* Button to reset the system (deletes questionnaires, questions, users, given answers etc. Admins and categories don't get deleted) */
 const resetBtn = document.querySelector('#resetall-btn');
 resetBtn.onclick = function () {
+    /* Call the API endpoint that will go on to delete the necessary DB tables */
     fetch('http://localhost:5000/admin/resetall', {
         headers: {
             'Content-type': 'application/json'
@@ -42,25 +48,20 @@ resetBtn.onclick = function () {
         method: 'POST',
     })
     .then(response => response.json())
-    .then(data => showJSONmessage(data['data']));
+    .then(data => showJSONmessage(data['data']));    //after getting the response, call this function
 }
 
+/* A function to display a pop up message that notifies the user of how the reset command went */
 function showJSONmessage(data){
     const table = document.querySelector('#resetall_result');
     let tableHtml = "";
     let boole = false;
     if(data.reason == 42) {boole = true};
-   // data = JSON.stringify(data);
-  //  console.log(data.substring(1, -2));
-  //  data = JSON.parse(data);
-  /*  data.forEach(function ({status, reason}) {
-        tableHtml += `<h2>{"status":${status}, "reason":${reason}}</h2>`;
-    });
-*/
+
     if(boole == true){
-    data = JSON.stringify(data);
-    data = data.substring(data, 14, -2);
-    tableHtml += `<h2>${data}}</h2>`;
+        data = JSON.stringify(data);
+        data = data.substring(data, 14, -2);
+        tableHtml += `<h2>${data}}</h2>`;
     }
     else {
         data = JSON.stringify(data);
@@ -70,9 +71,11 @@ function showJSONmessage(data){
     table.innerHTML = tableHtml;
         
     const noAnswers = document.querySelector('#resetall_res');
-    noAnswers.hidden = false;
+    noAnswers.hidden = false;  //hidden section gets shown (contains the message)
 }
 
+/* In order to upload a JSON file with a new questionnaire (The user has to press the button and choose the file
+    and afterwards press upload. The file will be then saved as a new questionnaire in the DB) */
 // Get the form and file field
 let form = document.querySelector('#upload');
 let file = document.querySelector('#file');
@@ -164,8 +167,8 @@ function handleSubmit (event) {
 function logFile (event) {
 	let str = event.target.result;
 	let json = JSON.parse(str);
-	//console.log('string', str);
 	console.log('json', json);
+    //Call the responsible API endpoint to save the new questionnaire data drawn from the file to the database
     fetch('http://localhost:5000/admin/questionnaire_upd', {
         headers: {
             'Content-type': 'application/json'
