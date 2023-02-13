@@ -1,16 +1,19 @@
-//values_storage 
 const mysql = require('mysql');
 const dotenv = require('dotenv');
 const { json, response } = require('express');
 let instance = null;
 dotenv.config();
 
+//connect to intelliq database
 const connection = mysql.createConnection({
    host: 'localhost',
    user: 'root',
    password: '',
    database: 'IntelliQ',
    port: 3306
+
+   //otherwise, use environment variables :
+
    /*host: process.env.HOST,
    user: process.env.USER,
    password: process.env.PASSWORD,
@@ -22,19 +25,18 @@ connection.connect((err) => {
     if (err) {
         console.log(err.message);
     }
-    // console.log('db ' + connection.state);
-    // console.log('connected' == connection.state);
-    //console.log('{"status":"OK", "dbconnection":[Server=' + (connection.config.host)+':5000' + ',3306;' + ' Database=' + connection.config.database+';'+' User Id='+ connection.config.user + ';'+' Password='+connection.config.password+';]}');
+    //check database status
      console.log('db ' + connection.state);
-    // console.log('connected' == connection.state);
-    // console.log('{"status":"OK", "dbconnection":[Server=' + (connection.config.host)+':5000' + ',3306;' + ' Database=' + connection.config.database+';'+' User Id='+ connection.config.user + ';'+' Password='+connection.config.password+';]}');
 });
 
+
+// Database Class with all DB functions 
 class DbService {
     static getDbServiceInstance() {
         return instance ? instance : new DbService();
     }
 
+    /* route : /getAllQuestionnaires | use : get all the questionnaires that have been created */
     async getAllSurveys() {
         try {
             const response = await new Promise((resolve, reject) => {
@@ -45,13 +47,14 @@ class DbService {
                     resolve(results);
                 })
             });
-            // console.log(response);
             return response;
         } catch (error) {
             console.log(error);
         }
     }
 
+
+    /* route : /insert | use : insert a new questionnaire, with the given title and keyword */
     async insertNewQuestionnaire(title, keyword) {
         try {
             const insertId = await new Promise((resolve, reject) => {
@@ -60,7 +63,6 @@ class DbService {
                 connection.query(query, [title, keyword] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
-             //       console.log(result.affectedRows + " record inserted");
                 })
             });
             return {
@@ -73,15 +75,17 @@ class DbService {
         }
     }
 
+
+    /* route : /addQuestion | use : insert a new question in the last questionnaire */
     async insertNewQuestion(title, answers_array, times, checkbox, qtype, category) {
         try {
+            //take the last questionnaire
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT id FROM survey ORDER BY id DESC LIMIT 0, 1;";
 
                 connection.query(query, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
 
@@ -91,47 +95,28 @@ class DbService {
                 connection.query(query, [category], (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
-         //  console.log('mplampla'); console.log(response[0].id);
+
+            //insert the question
             const insertId = await new Promise((resolve, reject) => {
                 const query = "INSERT INTO questions(title, required, category_id, qtype, survey_id) VALUES (?,?, ?, ?, ?);";
 
                 connection.query(query, [title,checkbox, resp[0].id, qtype, response[0].id] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
-                 //   console.log(result.affectedRows + " record inserted");
                 })
-            }); //console.log('insertId');console.log(insertId);//console.log(insertId);
-             /*const insertId2 = await new Promise((resolve, reject) => {
-                const query2 = "INSERT INTO answers(title, whose_question_id) VALUES (?, ?);";
+            }); 
 
-                connection.query(query2, [answer1,insertId] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result.insertId2);
-                    console.log(result.affectedRows + " record inserted");
-                })
-            });
-            const insertId3 = await new Promise((resolve, reject) => {
-                const query3 = "INSERT INTO answers(title, whose_question_id) VALUES (?, ?);";
-
-                connection.query(query3, [answer2,insertId] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result.insertId3);
-                    console.log(result.affectedRows + " record inserted");
-                })
-            });*/
+            // insert all possible answers for the added question (contained into answers_array)
             var insertId2_array = [];
             var insertId2;
             for(var i = 0; i < times; i++) {
                     insertId2 = await new Promise((resolve, reject) => {
                     var query2 = "INSERT INTO answers(title, whose_question_id) VALUES (?, ?);";
-    
                     connection.query(query2, [answers_array[i],insertId] , (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result.insertId2);
-                    //    console.log(result.affectedRows + " record inserted");
                     }) 
                 });
                 insertId2_array.push(insertId2);
@@ -148,6 +133,8 @@ class DbService {
         }
     }
 
+
+    /* route : /getSurveysSummary | use : get questions and answers of the created questionnaire in order for the user to define the flow */
     async getSurveysSummary() {
         try {
             const response2 = await new Promise((resolve, reject) => {
@@ -156,7 +143,6 @@ class DbService {
                 connection.query(query42, (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
             const response = await new Promise((resolve, reject) => {
@@ -166,7 +152,6 @@ class DbService {
                     resolve(results);
                 })
             });
-            // console.log(response);
             return response;
         } catch (error) {
             console.log(error);
@@ -174,6 +159,7 @@ class DbService {
     }
 
     
+    /* route : /updateFlow | use : update the flow according to the input of the creator of the questionnaire */
     async updateFlow(flow_array, help_array, flow_counter) {
         try {
             var response3;
@@ -194,31 +180,31 @@ class DbService {
         }
     }
     
+
+
+    /* route : /answer_survey/:sesID/:surID | use : get the questionnaire that the user chooses to answer in a specific session*/
     async getRequestedSurvey(survID,sessID) {
         try {
             let error = false;
+            //get the first question of the questionnaire
             const response45 = await new Promise((resolve, reject) => {
                 const query100 = "SELECT que.id as queid FROM questions as que inner join survey as sur on sur.id=que.survey_id where sur.id=? ORDER BY que.id ASC LIMIT 0, 1;";
 
                 connection.query(query100,[survID] ,(err,results) => {
                     if (err) {error = true};
                     resolve(results); 
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
-            
+            //get the details of the first question
             const response69 = await new Promise((resolve, reject) => {
                 const query88 = "select ? as sessID ,que.id as quesid, que.title as questitle, ans.title as atitle, ans.next_question_id as nextque, ans.id as answerid, sur.id as surid, cat.title as cattitle from questions as que inner join answers as ans on que.id=ans.whose_question_id inner join survey as sur on sur.id=que.survey_id inner join category as cat on cat.id=que.category_id where que.id=?;";
 
                 connection.query(query88, [sessID,response45.length!=0?response45[0].queid:-1], (err,results) => {
                     if (err) {error = true};
                     if(!err) resolve(results); else resolve();
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
             
-            
-          //  console.log(response69);
             return (!error) ? response69 : [];
         
         } catch (error) {
@@ -227,6 +213,7 @@ class DbService {
     
     }
     
+    /* route : /login/:email/:pass | use : get the role of the person who is trying to login - if no such user or admin exists return empty list -> invalid credentials*/
     async checkCredentials(email,password) {
         try {
             let error = false;
@@ -237,13 +224,13 @@ class DbService {
                     if(!err)resolve(results); else resolve();
                 })
             });
-            //console.log(insertId23);
             return (!error)? insertId23 : [];
         } catch (error) {
             console.log(error);
         }
     }
     
+
     async Save_new_value(button_value) {
         try {
             const insertId20 = await new Promise((resolve, reject) => {
@@ -265,7 +252,8 @@ class DbService {
     }
 
  
-
+    
+    /* route : /next_question/:option/:sessionID | use : get the next question of the questionnaire according to the given answer in the previous question*/
     async getNextQuestion(option,sessionID) {
         try {
             let error = false;
@@ -275,7 +263,6 @@ class DbService {
                 connection.query(query101,[option] ,(err,results) => {
                     if (err) error=true;
                     if(!err)resolve(results);else resolve();
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
 
@@ -285,11 +272,8 @@ class DbService {
                 connection.query(query89, [sessionID,response12.length!=0?response12[0].nextq:-1], (err,results) => {
                     if (err) error=true;
                     if(!err)resolve(results);else resolve();
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
-
-          //  console.log(response70);
             return !error?response70:[];
         } catch (error) {
             console.log(error);
@@ -297,9 +281,11 @@ class DbService {
     }
 
 
+    /* route : /create_session/:value | use : create a new session when a questionnaire is going to be answered*/
     async createNewSession(survID) {
         try {
             let error = false;
+            //random session ID with 4 random characters
             let sesID = Buffer.from(Math.random().toString()).toString("base64").substring(10,14);
             const insertId32 = await new Promise((resolve, reject) => {
                 const query38 = "INSERT INTO session (session_id,survey_id, registered_users_id) VALUES (?,?, 1);";
@@ -307,10 +293,9 @@ class DbService {
                 connection.query(query38, [sesID,survID] , (err, result) => {
                     if (err) {error=true};
                     if(!err) resolve(result.insertId32); else resolve();
-                //    console.log(result.affectedRows + " record inserted");
                 })
             });
-            //console.log('insertId32',insertId32);
+            console.log("INSERT INTO session (session_id,survey_id, registered_users_id) VALUES ('"+sesID+"',"+survID+','+'1'+');')
             return (!error)?{
                 session_id:sesID,
                 survID:survID
@@ -321,19 +306,20 @@ class DbService {
     }
 
 
-
+    /* route : /doanswer/:questionnaireID/:questionID/:session/:optionID | use : save the given answer in a question*/
     async SaveGivenAnswer(sessionID,optionID) {
         try {
             let error = false;
             const insertId53 = await new Promise((resolve, reject) => {
                 const query53 = "INSERT INTO answers_registered_users VALUES (?,?, ?);";
-
                 connection.query(query53, [optionID, 1, sessionID] , (err, result) => {
                     if (err) error=true;
                     if(!err)resolve(result.insertId53); else resolve();
                //     console.log(result.affectedRows + " record inserted");
                 })
             });
+            console.log('INSERT INTO answers_registered_users VALUES'+'('+optionID+','+'1'+",'"+sessionID+"');");
+            
             return !error?{
                 insertId53 : insertId53,
                 sessionID : sessionID,
@@ -344,6 +330,9 @@ class DbService {
         }
     }
         
+
+    
+    /* route : /getquestionanswers/:questionnaireID | use : get all the question of the questionnaire*/
     async getSurveysQuestions(questionnaireID) {
         try {
             let error = false;
@@ -361,6 +350,9 @@ class DbService {
         }
     }
 
+
+    
+    /* route : /getquestionanswers/:questionnaireID/:questionID | use : get all the answers given in a specific question of a specific questionnaire in all sessions*/
     async getStatistics(questionID) {
         try {
             let error = false;
@@ -377,7 +369,10 @@ class DbService {
             console.log(error);
         }
     }
-            
+           
+    
+    
+     /* route : /getsessionanswers/:questionnaireID/:session | use : get the answers given in all questions of a specific questionnaire in a specific session*/
     async getSummary(sessionID, questionnaireID) {
         try {
             let error = false;
@@ -387,7 +382,6 @@ class DbService {
                 connection.query(query101,[sessionID, questionnaireID] ,(err,results) => {
                     if (err) error=true;
                     if(!err)resolve(results); else resolve();
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
             return !error?response87:[];
@@ -395,6 +389,10 @@ class DbService {
             console.log(error);
         }
     }
+
+
+    
+    /* route : /admin/healthcheck | use : get healthcheck parameters, such as DB information and status*/
     async getHealthcheck() {
         let status;
         console.log(connection.state);
@@ -405,14 +403,12 @@ class DbService {
             status = 'failed';
         }
         try {
-
             const response88 = await new Promise((resolve, reject) => {
                 const query101 = "select ? as status, ? as Server, ? as sqlport, ? as Database1, ? as User_Id, ? as password;";
 
                 connection.query(query101,[status, connection.config.host, connection.config.port, connection.config.database, connection.config.user, connection.config.password] ,(err,results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
-                  //  console.log(result.affectedRows + " record inserted");
                 })
             });
             console.log('response:', response88);
@@ -423,7 +419,8 @@ class DbService {
     }
 
 
-
+    
+    /* route : /admin/questionnaire_upd | use : add a new questionnaire (and all of its questions and answers), given in a json input file*/
     async newSurveyJson(surID, surTitle,keywords,questions) {
         try {
             let error=false;
@@ -433,7 +430,6 @@ class DbService {
                 connection.query(query53, [surID, surTitle, keywords] , (err, result) => {
                     if (err) {error=true;}
                     if(!err)resolve(result.insertId57); else resolve();
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             
@@ -445,7 +441,6 @@ class DbService {
                     connection.query(query54, [questions[i].qID, questions[i].qtext, questions[i].required,questions[i].type,surID] , (err, result) => {
                         if (err) error=true;
                         if(!err)resolve(result.insertId54); else resolve();
-                     //   console.log(result.affectedRows + " record inserted");
                     })
                 });
                 let ansN = questions[i].options.length;
@@ -458,7 +453,6 @@ class DbService {
                         connection.query(query55, [questions[i].options[j].optID, questions[i].options[j].opttxt,questions[i].qID,questions[i].options[j].nextqID] , (err, result) => {
                             if (err) error=true;
                             if(!err)resolve(result.insertId55); else resolve();
-                      //      console.log(result.affectedRows + " record inserted");
                         })
                     });
                 }
@@ -476,6 +470,9 @@ class DbService {
             console.log(error);
         }
     }
+
+
+    /* route : /admin/resetall | use :*/
     async resetAll() {
         try {
             const insertId53 = await new Promise((resolve, reject) => {
