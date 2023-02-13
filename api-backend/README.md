@@ -35,3 +35,5 @@ The basic (required) endpoints of our application are the following ones:
 
 Since we have implemented frontend for the creation of questionnaires by the admin as well, many endpoints that  
 have to do with this have also been added and can be found in the app.js file. 
+
+This folder also contains a file that contains a link to the Postman API Documentation of our application. 
