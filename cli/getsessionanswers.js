@@ -35,13 +35,19 @@ axios.get(url,{
     let answers = JSON.stringify(response.data).slice(9,-2);
     const csvString = [
         [
-          "Question_Title",
           "Questionnaire_ID",
+          "Session_ID",
+          "Question_ID",
+          "Question_Title",
+          "Answer_ID",
           "Answer_Title"
         ],
         ...(response.data.data).map(item => [
-          item.quetitle,
           item.quesid,
+          item.sessionid,
+          item.queid,
+          item.quetitle,
+          item.ansid,
           item.anstitle
         ])
       ]

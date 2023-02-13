@@ -4,6 +4,13 @@ const yargs = require('yargs');
 const axios = require('axios').default;
 
 
+yargs.command(
+  'healthcheck', // Command name, plus a positional argument message
+  'This command returns the current status of the server (whether it is running or not plus database info)', // Command description for --help  
+   );
+
+yargs.positional('format', { describe: 'Define the format of the result (json or csv)'}); 
+
 let argv = yargs.argv;
 let format = argv.format;
 yargs.command(

@@ -4,6 +4,14 @@ const yargs = require('yargs');
 const axios = require('axios').default;
 
 
+yargs.command(
+  'resetq', // Command name, plus a positional argument message
+  'Attention! This command deletes all info regarding the answers of one particular questionnaire', // Command description for --help  
+   );
+
+yargs.positional('questionnaire_id', { describe: 'The ID of the questionnaire'});     
+yargs.positional('format', { describe: 'Define the format of the result (json or csv)'}); 
+
 let argv = yargs.argv;
 let survID = argv.questionnaire_id;
 let format = argv.format;

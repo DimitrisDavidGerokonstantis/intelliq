@@ -17,26 +17,37 @@
     <main>
         <h1>About Us</h1>  
         <br><br>
-        <p class = "about_us_page" type = "text">IntelliQ is an application that allows the user to answer existing questionnaires and create his/her own surveys! The creator of a questionnaire can view statistics regarding the survey to draw conclusions regarding the research topic. 
-            In order to join our community, create a free account here!!! </p>
+        <p class = "about_us_page" type = "text">IntelliQ is an application that allows the user to answer existing questionnaires. The system administrator can create the questionnaires and questionnaire statistics are also available!  
+            In order to join our community, create a free account </p>
     </main>
   </body>
   <script>
-    
+    /* Implementation of switch between dark and light mode */
     console.log(localStorage.getItem('dark'));
     var isLight ;
     let checkbox = document.getElementById("toggle");
     document.addEventListener('DOMContentLoaded', function () {
-        if(localStorage.getItem('dark')) {
-    modeSwitchToDark();checkbox.innerText = "🌞" ;
+    if(localStorage.getItem('dark')) {
+        modeSwitchToDark();
+        checkbox.innerText = "🌞" ;
     } 
-    else {modeSwitchToLight();checkbox.innerText = "🌞" ;checkbox.innerText = "🌚";}
-});
+    else {
+      modeSwitchToLight();
+      checkbox.innerText = "🌞" ;
+      checkbox.innerText = "🌚";
+    }
+    });
 
-checkbox.addEventListener( "click", function() {
-         if(localStorage.getItem('dark')){modeSwitchToLight();localStorage.removeItem('dark');}
-         else {modeSwitchToDark();localStorage.setItem('dark','dark');}}
-    );
+    checkbox.addEventListener( "click", function() {
+         if(localStorage.getItem('dark')){
+             modeSwitchToLight();
+             localStorage.removeItem('dark');
+         }
+         else {
+          modeSwitchToDark();
+          localStorage.setItem('dark','dark');
+        }
+    });
 
     
 
