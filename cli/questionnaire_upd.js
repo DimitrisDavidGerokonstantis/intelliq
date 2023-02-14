@@ -3,9 +3,7 @@
 const yargs = require('yargs');
 const axios = require('axios').default;
 
-
-
-
+// Define the name and the arguments of the command
 yargs.command(
     'questionnaire_upd', // Command name, plus a positional argument message
     'Upload a json file with a new questionnaire with id=100', // Command description for --help  
@@ -13,19 +11,20 @@ yargs.command(
 
  yargs.positional('source', { describe: 'name of the json source file'});    
 
-
+//read the argument
 let argv = yargs.argv;
 let source = argv.source;
 
 
-
+// read the input json file 
 const fs = require("fs");
 fs.readFile(source, "utf8", (err, jsonString) => {
   if (err) {
     console.log("Error reading file from disk:", err);
-    process.exitCode=400;
+    process.exitCode=400; // of error occurs
     return;
   }
+  // call the required API route in order for the command to do what it is supposed to do
   try {
     let url = `http://localhost:5000/admin/questionnaire_upd`;
     const customer = JSON.parse(jsonString);
@@ -36,13 +35,12 @@ fs.readFile(source, "utf8", (err, jsonString) => {
     questions :customer.questions
 })
  .then((response)=> {
-      console.log('Survey Added');
+      console.log('Survey Added'); // if everything is alright
       process.exitCode=response.status; 
   })
-  .catch((error)=> {
+  .catch((error)=> { // if an error occurs
       console.log('Error on adding the new questionnaire. This questionnaire may have already been added or the server does not work properly');
   })
-   // console.log(customer.questions); // => "Customer address is: Infinity Loop Drive"
   } catch (err) {
     console.log("Error parsing JSON string:", err);
   }

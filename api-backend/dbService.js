@@ -205,7 +205,7 @@ class DbService {
                 })
             });
             
-            return (!error) ? response69 : [];
+            return (!error) ? response69 : [];  // if an error occured, return empty list so that API can return error message and error code to the user
         
         } catch (error) {
             console.log(error);
@@ -224,7 +224,7 @@ class DbService {
                     if(!err)resolve(results); else resolve();
                 })
             });
-            return (!error)? insertId23 : [];
+            return (!error)? insertId23 : []; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -274,7 +274,7 @@ class DbService {
                     if(!err)resolve(results);else resolve();
                 })
             });
-            return !error?response70:[];
+            return !error?response70:[]; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -299,7 +299,7 @@ class DbService {
             return (!error)?{
                 session_id:sesID,
                 survID:survID
-            }:[];
+            }:[];  // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -315,7 +315,6 @@ class DbService {
                 connection.query(query53, [optionID, 1, sessionID] , (err, result) => {
                     if (err) error=true;
                     if(!err)resolve(result.insertId53); else resolve();
-               //     console.log(result.affectedRows + " record inserted");
                 })
             });
             
@@ -324,7 +323,7 @@ class DbService {
                 insertId53 : insertId53,
                 sessionID : sessionID,
                 optionID : optionID
-            }:[];
+            }:[]; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -344,7 +343,7 @@ class DbService {
                 })
             });
             console.log(insertId23);
-            return (!error)? insertId23 : [];
+            return (!error)? insertId23 : []; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -364,7 +363,7 @@ class DbService {
                 })
             });
             console.log(insertId23);
-            return (!error)? insertId23:[];
+            return (!error)? insertId23:[]; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -384,7 +383,7 @@ class DbService {
                     if(!err)resolve(results); else resolve();
                 })
             });
-            return !error?response87:[];
+            return !error?response87:[]; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -465,7 +464,7 @@ class DbService {
                 keywords : keywords,
                 questions : questions
                 
-            }:[];
+            }:[]; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -546,7 +545,7 @@ class DbService {
     }
    
 
-    /* route : /getsurveydetails/:questionnaireID | use : get info about every questionnaire (i.e. questions, answers and )*/
+    /* route : /getsurveydetails/:questionnaireID | use : get info about every questionnaire such as the title, keyword, questions, type of questions...*/
     async getSurveyDetails(questionnaireID) {
         try {
             const response = await new Promise((resolve, reject) => {
@@ -563,6 +562,8 @@ class DbService {
         }
     }
 
+    
+    /* route : /getquestiondetails/:questionID | use : get info about every question (i.e. answers, flow - next questions)*/
     async getQuestionDetails(questionID) {
         try {
             let error = false;
@@ -574,13 +575,14 @@ class DbService {
                     if(!err)resolve(results); else resolve();
                 })
             });
-            // console.log(response);
-            return (!error)? response : [];
+            return (!error)? response : []; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
     }
 
+
+    /* route : /admin/createUser | use : insert a new user or admin*/
     async createUser(username, password) {
         try {
             const insertId = await new Promise((resolve, reject) => {
@@ -602,6 +604,9 @@ class DbService {
         }
     }
 
+
+    
+    /* route : /admin/resetq/:questionnaireID | use : reset all parameters of a questionnaire*/
     async resetQuestionnaire(surveyID) {
         try {
             const insertId53 = await new Promise((resolve, reject) => {
@@ -610,7 +615,6 @@ class DbService {
                 connection.query(query4, [surveyID], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId53);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId5 = await new Promise((resolve, reject) => {
@@ -618,7 +622,6 @@ class DbService {
                 connection.query(query4, [surveyID], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId53);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
 
@@ -634,6 +637,9 @@ class DbService {
         }
     }
 
+
+
+    /* route : /cli/doanswer/:questionnaireID/:questionID/:session/:optionID | use : same as SaveGivenAnswer() but using CLI*/
     async CliSaveGivenAnswer(surveyID,sessionID,optionID) {
         /// later: function to check if the given sessionID already exists OR trigger in database
         try {
@@ -651,13 +657,12 @@ class DbService {
                 connection.query(query115, [optionID, 1, sessionID] , (err, result) => {
                     if (err) error=true;
                     if(!err)resolve(result.insertId115);else resolve();
-                 //   console.log(result.affectedRows + " record inserted");
                 })
             });
         
             return (!error)?{
                 status : 'OK'
-            }:[];
+            }:[]; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch(error) {
             console.log(error);
         }

@@ -1,40 +1,36 @@
+/*Testing for an admin's use case : login, insert a new questionnaire giving title and keyword 
+and insert three questions with two possible answers for each one of them.
+Get the Summary of the created questionnaire and define the flow
+*/ 
+
 let db = require("../api-backend/dbService");
-//Require the dev-dependencies
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../api-backend/app');
 let should = chai.should();
 var token;
 
-
 chai.use(chaiHttp);
-//Our parent block
+
 describe('Admin', () => {
 
-/*
-  * Test the /GET route
-  */
+  // Login as an admin
   describe('/login/:email/:pass', () => {
       it('it should login an admin with correct username and password', (done) => {
         const admin = {
-          username: "thanos@mail.gr",
+          username: "thanos@mail.gr", // admin's account
           password: "hello2"
         }
         chai.request(server)
             .get('/login/'+admin.username+'/'+admin.password)
             .end((err, res) => {
-                  res.should.have.status(200);
-                  
-                //  res.body.should.have.property('accessToken');
-                 // token = res.body.accessToken;
-
-                  //res.body.should.be.a('array');
-                  //res.body.length.should.be.eql(0);
+                  res.should.have.status(200); // it should return status 200
               done();
             });
       });
   });
 
+  // Insert a new questionnaire giving title and keyword
   describe('/insert', () => {
     it('it should create a new questionnaire with title and keyword', (done) => {
       const survey = {
@@ -45,12 +41,13 @@ describe('Admin', () => {
           .post('/insert')
           .send(survey)
           .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(200); // it should return status 200
             done();
           });
     });
 });
 
+// Add the first question giving all the required parameters
 describe('/addQuestion', () => {
     it('it should add the first question of the questionnaire', (done) => {
       const question1 = {
@@ -65,12 +62,13 @@ describe('/addQuestion', () => {
           .post('/addQuestion')
           .send(question1)
           .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(200); // it should return status 200
             done();
           });
     });
 });
 
+// Add the second question giving all the required parameters
 describe('/addQuestion', () => {
     it('it should add the second question of the questionnaire', (done) => {
       const question2 = {
@@ -85,12 +83,14 @@ describe('/addQuestion', () => {
           .post('/addQuestion')
           .send(question2)
           .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(200); // it should return status 200
             done();
           });
     });
 });
 
+
+// Add the third question giving all the required parameters
 describe('/addQuestion', () => {
     it('it should add the third question of the questionnaire', (done) => {
       const question3 = {
@@ -105,12 +105,14 @@ describe('/addQuestion', () => {
           .post('/addQuestion')
           .send(question3)
           .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(200);  // it should return status 200
             done();
           });
     });
 });
 
+
+// Get the summary of the questionnaire
 let answers_ids = [];
 let questions_ids = [];
 describe('/getSurveysSummary', () => {
@@ -119,7 +121,7 @@ describe('/getSurveysSummary', () => {
           .get('/getSurveysSummary')
           .end((err, res) => {
             var help = 0;
-               res.should.have.status(200);
+               res.should.have.status(200); // it should return status 200
                var json = JSON.parse(res.res.text);
                for(let i = 0; i < (json["data"]).length; i++){
                 answers_ids.push(json["data"][i].ansid);
@@ -128,13 +130,13 @@ describe('/getSurveysSummary', () => {
                    help = json["data"][i].qid;
                 }
                }
-          //     console.log(answers_ids);
-          //     console.log(questions_ids);
             done();
           });
     });
 }); 
 
+
+// Define the flow
 describe('/updateFlow', () => {
     it('it should update the flow of the questions according to the admin input', (done) => {
       const flow = {
@@ -146,10 +148,9 @@ describe('/updateFlow', () => {
           .patch('/updateFlow')
           .send(flow)
           .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(200); // it should return status 200
             done();
           });
     });
 });
-
 })
