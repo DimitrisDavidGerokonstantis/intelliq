@@ -22,7 +22,8 @@
     "resetq": "resetq.js",
     "question": "question.js",
     "doanswer": "doanswer.js",
-    "questionnaire": "questionnaire.js"
+    "questionnaire": "questionnaire.js",
+    "createUser": "createUser.js"
   },
   "description": ""
 }
