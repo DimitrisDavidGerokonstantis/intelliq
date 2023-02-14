@@ -373,25 +373,5 @@ app.post('/cli/doanswer/:questionnaireID/:questionID/:session/:optionID', (reque
  });
 
 
-
-//doanswer from cli
-app.post('/cli/doanswer/:questionnaireID/:questionID/:session/:optionID', (request, response) => {
-     const sessionID  = request.params.session;
-     console.log('session',sessionID);
-     
-     const optionID  = request.params.optionID;
-     console.log('option',optionID);
-
-     const surveyID  = request.params.questionnaireID;
-     console.log('questionnaire',surveyID);
-
-     const db = dbService.getDbServiceInstance();
-     const result = db.CliSaveGivenAnswer(surveyID,sessionID,optionID);
-     result
-     .then(data => response.json({ data: data}))
-     .catch(err => console.log(err));
- });
-
-
 let server = app.listen(5000, () => console.log('app is running'));
 module.exports = server;
