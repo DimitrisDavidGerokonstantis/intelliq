@@ -26,6 +26,7 @@ function loadHTMLTable(data) {
         tableHtml += `<td>${title}</td>`;
         tableHtml += `<td>${keywords}</td>`;
         tableHtml += `<td>`;
+        tableHtml += `<button id="${help_counter}" onclick="ShowQuestions(${id})" value="${id}">Statistics</button>`;
         tableHtml += `<button id="${help_counter}" onclick="resetQuestionnaire(${id})" value="${id}">Reset</button></td>`;
         tableHtml += "</tr>";
         help_counter +=1;
@@ -33,6 +34,138 @@ function loadHTMLTable(data) {
 
     table.innerHTML = tableHtml;
 }
+
+//On press of the Statistics button. Shows a list of the questions of this questionnaire to pick one.
+//The responsible endpoint gets the data asked for. 
+function ShowQuestions(questionnaireID) {
+    fetch('http://localhost:5000/getquestionanswers/' + questionnaireID, {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'GET'
+    })
+    .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
+    .then(data => QuestionStat(data['data']));  //display the questions of this questionnaire to the user
+}
+
+// display the questions to the user. The user then chooses a question to check its statistics. 
+function QuestionStat(data) {
+    const table = document.querySelector('#showSurveys_main');
+    let tableHtml = "";
+    let counter = 0 ;
+    //Iteratively display each question with its button
+    data.forEach(function ({surTitle, queTitle, queID, surID}) {  
+         if(counter==0)tableHtml += `<h1>Survey : ${surTitle}</h1>`;     
+         tableHtml += `<h3>${queTitle}  `;
+         tableHtml += " "
+         tableHtml += ` <button class="statistic-button" id="${queID}" name="${surTitle}" onclick="Statistics(${queID},${surID})", value="5">See Statistics</button></h3>`;
+         counter++
+ });
+
+    table.innerHTML = tableHtml;
+}
+
+
+//Fetch statistics for the selected question (on click of the See Statistics button)
+function Statistics(questionID,questionnaireID) {
+    fetch('http://localhost:5000/getquestionanswers/' + questionnaireID +'/' + questionID, {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'GET'
+    })
+    .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
+    .then(data => DisplayQuestionStatistics(data['data']));   //display the results to the user with this function
+}
+
+
+//Display the question statistics to the user
+function DisplayQuestionStatistics(data) {
+    const table = document.querySelector('#showSurveys_main');
+    let tableHtml = "";
+    let counter = 0;
+    let data2=[];
+    data.forEach(function ({Survey, Session, Question,AnswerTitle, Time}) {  
+        if(counter==0) {
+            data2.push({x:AnswerTitle, value:0});
+            tableHtml += `<h1>${Survey} : `;
+            tableHtml += `${Question}</h1>`;
+            tableHtml += `<div id="container" style="position: relative; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 330px;"></div>`
+            tableHtml += `<h1>Detailed Results : </h1>`;
+        }
+        if(data2.findIndex(element=>element.x==AnswerTitle)==-1)data2.push({x:AnswerTitle, value:1});
+        else data2[data2.findIndex(element=>element.x==AnswerTitle)].value+=1
+         tableHtml += `<h3>Session : ${Session}   |   Answer : ${AnswerTitle} (Time :${Time})</h3><br> `;
+         counter++;
+ });
+
+    if(counter!=0)tableHtml += `<button onclick="Back()">Back</button>`;
+    else {
+        tableHtml += `<br><br><br><h1>No Data</h1>`;
+        tableHtml += `<br><br><br><br><button onclick="Back()">Back</button>`;
+    }
+    
+    table.innerHTML = tableHtml;
+    draw_chart(data2);
+}
+
+// draw the pie chart
+function draw_chart(data){
+anychart.onDocumentReady(function() {
+    // create the chart
+    var chart = anychart.pie();
+  
+    // set the chart title
+    chart.title("Pie Chart");
+    chart.fill("aquastyle");
+    chart.labels().position("outside");
+    // add the data
+    chart.data(data);
+  
+    // display the chart in the container
+    chart.container('container');
+    chart.draw();
+  
+  });
+}
+
+
+//Back button after checking statistics of a question
+function Back(){
+    location.replace('showQuestionnaires_admin.html');
+}
+
+let helper;
+//Show the summary of selected answers to the user
+function DisplaySummary(data) {
+    const main = document.querySelector('#showSurveys_main');
+    let counter = 1;
+    let tableHtml = "";
+    tableHtml += "<h2><b>Summary of your selected answers</b></h2>"
+    data.forEach(function ({ anstitle, quetitle, quesid }) { 
+            helper = quesid;
+            tableHtml += `<h3>Question ${counter} : ${quetitle}</h3>`   
+            tableHtml += "<h3>";
+            tableHtml += `Selected Answer: ${anstitle}</h3><br><br>`;
+            counter += 1;
+    });
+    tableHtml +=`<div class='button'>`;
+    tableHtml += `<button id="end-summary" onclick="finish(helper)">Finish</button>`;
+    tableHtml +=`</div>`;
+    main.innerHTML = tableHtml;
+}
+
+//On click of the finish button, display a confirm message
+function finish(helper){
+    console.log("helper: ", helper);
+    if(confirm('Your Questionnaire has been submitted! If you wish to answer another one click OK. If you wish to reanswer this one click "Cancel"')){
+    location.replace('showQuestionnaires_admin.html');
+    }
+    else{ 
+        createSession(helper);
+    }
+}
+
 
 /* Load the question and display it to the user for the data that it has been called for */
 function loadQuestion(data) {

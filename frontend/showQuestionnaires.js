@@ -217,12 +217,12 @@ function DisplayQuestionStatistics(data) {
             data2.push({x:AnswerTitle, value:0});
             tableHtml += `<h1>${Survey} : `;
             tableHtml += `${Question}</h1>`;
-            tableHtml += `<div id="container" style="position: relative; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 330px;"></div>`
-            tableHtml += `<h1>Detailed Results : </h1>`;
+            tableHtml += `<div id="container" style="position: relative; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 330px;"></div><br><br>`
+           // tableHtml += `<h1>Detailed Results : </h1>`;
         }
         if(data2.findIndex(element=>element.x==AnswerTitle)==-1)data2.push({x:AnswerTitle, value:1});
         else data2[data2.findIndex(element=>element.x==AnswerTitle)].value+=1
-         tableHtml += `<h3>Session : ${Session}   |   Answer : ${AnswerTitle} (Time :${Time})</h3><br> `;
+        // tableHtml += `<h3>Session : ${Session}   |   Answer : ${AnswerTitle} (Time :${Time})</h3><br> `;
          counter++;
  });
 
