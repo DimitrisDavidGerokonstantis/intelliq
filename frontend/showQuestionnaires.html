@@ -15,9 +15,17 @@
 </head>
 <body class="prob1" id="prob">
     <main id="showSurveys_main">
-        <h1>Surveys</h1>
+        <section class="container">
+            <h2>Search for a Questionnaire</h2>
+            <input type="text" class="table-filter" data-table="order-table" placeholder="Search by title, keyword or ID..." />
+        <h1>Questionnaires</h1>
         <div>
-        <table id="table">
+            <script src="https://cdn.anychart.com/js/8.0.1/anychart-core.min.js"></script>
+            <script src="https://cdn.anychart.com/js/8.0.1/anychart-pie.min.js"></script>
+            
+            <div id="container"></div>
+
+        <table id="table" class="order-table table">
             <thead>
                 <th>ID</th>
                 <th>Title</th>
@@ -80,7 +88,7 @@ function modeSwitchToDark() {
   checkbox.innerText = "🌞" ;
   
 }
-        
+
     </script>
     
     <script src="showQuestionnaires.js"></script>

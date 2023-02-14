@@ -211,11 +211,17 @@ function DisplayQuestionStatistics(data) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0;
+    let data2=[];
     data.forEach(function ({Survey, Session, Question,AnswerTitle, Time}) {  
         if(counter==0) {
+            data2.push({x:AnswerTitle, value:0});
             tableHtml += `<h1>${Survey} : `;
             tableHtml += `${Question}</h1>`;
+            tableHtml += `<div id="container" style="position: relative; left: 0px; top: 0px; overflow: hidden; width: 100%; height: 330px;"></div>`
+            tableHtml += `<h1>Detailed Results : </h1>`;
         }
+        if(data2.findIndex(element=>element.x==AnswerTitle)==-1)data2.push({x:AnswerTitle, value:1});
+        else data2[data2.findIndex(element=>element.x==AnswerTitle)].value+=1
          tableHtml += `<h3>Session : ${Session}   |   Answer : ${AnswerTitle} (Time :${Time})</h3><br> `;
          counter++;
  });
@@ -225,8 +231,33 @@ function DisplayQuestionStatistics(data) {
         tableHtml += `<br><br><br><h1>No Data</h1>`;
         tableHtml += `<br><br><br><br><button onclick="Back()">Back</button>`;
     }
+    
     table.innerHTML = tableHtml;
+    draw_chart(data2);
 }
+
+// draw the pie chart
+function draw_chart(data){
+anychart.onDocumentReady(function() {
+    // create the chart
+    var chart = anychart.pie();
+  
+    // set the chart title
+    chart.title("Pie Chart");
+    chart.fill("aquastyle");
+    chart.labels().position("outside");
+    // add the data
+    chart.data(data);
+  
+    // display the chart in the container
+    chart.container('container');
+    chart.draw();
+  
+  });
+}
+
+
+
 
 //Back button after checking statistics of a question
 function Back(){
@@ -328,3 +359,42 @@ function loadQueDet(data) {
 
     table.innerHTML = tableHtml;
 }
+
+
+
+// Search Bar Implementation
+(function() {
+	'use strict';
+
+var TableFilter = (function() {
+ var Arr = Array.prototype;
+		var input;
+  
+		function onInputEvent(e) {
+			input = e.target;
+			var table1 = document.getElementsByClassName(input.getAttribute('data-table'));
+			Arr.forEach.call(table1, function(table) {
+				Arr.forEach.call(table.tBodies, function(tbody) {
+					Arr.forEach.call(tbody.rows, filter);
+				});
+			});
+		}
+
+		function filter(row) {
+			var text = row.textContent.toLowerCase();
+      var val = input.value.toLowerCase();
+			row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+		}
+
+		return {
+			init: function() {
+				var inputs = document.getElementsByClassName('table-filter');
+				Arr.forEach.call(inputs, function(input) {
+					input.oninput = onInputEvent;
+				});
+			}
+		};
+ 
+	})(); 
+ TableFilter.init(); 
+})();

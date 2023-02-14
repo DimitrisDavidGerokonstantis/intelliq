@@ -2,7 +2,6 @@ from random_word import RandomWords
 from essential_generators import DocumentGenerator
 import random
 import string
-from randomtimestamp import randomtimestamp, random_date, random_time
 import sys
 
 
@@ -11,6 +10,7 @@ original_stdout = sys.stdout # Save a reference to the original standard output
 N= int(input("How many dummy questionnaires do you want to create ? "))
 M= int(input("How many dummy questions do you want to add in every single questionnaire ? "))
 K = int(input("How many dummy answers do you want to add in every single question ? "))
+L = int(input("How many dummy sessions with random given answers do you want to add in every single questionnaire ? "))
 
 
 with open('dummy_data.sql', 'w') as f:
@@ -44,7 +44,7 @@ with open('dummy_data.sql', 'w') as f:
                 else : 
                     next = random.randint(help+1,(i+1)*M)
                 print('INSERT INTO answers VALUES (',(i*M+j+1)*K-1+k,",'",'Answer',(i*M+j+1)*K-1+k,"',",help,",",next,");",sep="")
-    for u in range(10) :         
+    for u in range(L) :         
         for i in range(300,300+N) : 
             sesID = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
             print("INSERT INTO session (session_id,survey_id,registered_users_id) VALUES ('",sesID,"',",i+1,",",1,");",sep="")
