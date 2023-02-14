@@ -295,7 +295,7 @@ class DbService {
                     if(!err) resolve(result.insertId32); else resolve();
                 })
             });
-            console.log("INSERT INTO session (session_id,survey_id, registered_users_id) VALUES ('"+sesID+"',"+survID+','+'1'+');')
+            
             return (!error)?{
                 session_id:sesID,
                 survID:survID
@@ -318,7 +318,7 @@ class DbService {
                //     console.log(result.affectedRows + " record inserted");
                 })
             });
-            console.log('INSERT INTO answers_registered_users VALUES'+'('+optionID+','+'1'+",'"+sessionID+"');");
+            
             
             return !error?{
                 insertId53 : insertId53,
@@ -472,7 +472,7 @@ class DbService {
     }
 
 
-    /* route : /admin/resetall | use :*/
+    /* route : /admin/resetall | use : reset all parameters of the system*/
     async resetAll() {
         try {
             const insertId53 = await new Promise((resolve, reject) => {
@@ -481,7 +481,6 @@ class DbService {
                 connection.query(query4, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId53);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId5 = await new Promise((resolve, reject) => {
@@ -489,7 +488,6 @@ class DbService {
                 connection.query(query4, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId53);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId6 = await new Promise((resolve, reject) => {
@@ -497,7 +495,6 @@ class DbService {
                 connection.query(query5, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId6);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId7 = await new Promise((resolve, reject) => {
@@ -505,7 +502,6 @@ class DbService {
                 connection.query(query6, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId7);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId8 = await new Promise((resolve, reject) => {
@@ -513,7 +509,6 @@ class DbService {
                 connection.query(query7, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId8);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId11 = await new Promise((resolve, reject) => {
@@ -521,7 +516,6 @@ class DbService {
                 connection.query(query10, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId11);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId9 = await new Promise((resolve, reject) => {
@@ -529,7 +523,6 @@ class DbService {
                 connection.query(query8, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId9);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
             const insertId10 = await new Promise((resolve, reject) => {
@@ -537,7 +530,6 @@ class DbService {
                 connection.query(query9, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId10);
-                    //console.log(result.affectedRows + " record inserted");
                 })
             });
 
@@ -553,6 +545,8 @@ class DbService {
         }
     }
    
+
+    /* route : /getsurveydetails/:questionnaireID | use : get info about every questionnaire (i.e. questions, answers and )*/
     async getSurveyDetails(questionnaireID) {
         try {
             const response = await new Promise((resolve, reject) => {

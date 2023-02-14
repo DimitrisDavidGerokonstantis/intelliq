@@ -25,7 +25,7 @@ function loadHTMLTable(data) {
         tableHtml += `<td>${id}</td>`;
         tableHtml += `<td>${title}</td>`;
         tableHtml += `<td>${keywords}</td>`;
-        tableHtml += `<td><button id="${help_counter}" onclick="createSession(${id})" value="${id}">Edit</button>`;
+        tableHtml += `<td>`;
         tableHtml += `<button id="${help_counter}" onclick="resetQuestionnaire(${id})" value="${id}">Reset</button></td>`;
         tableHtml += "</tr>";
         help_counter +=1;

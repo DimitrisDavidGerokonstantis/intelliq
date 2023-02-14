@@ -201,7 +201,7 @@ app.get('/login/:email/:pass', (request, response) => {
 
     function status(data){
        // console.log(data.length);
-        if(data.length==0)response.status(404).send('Not Found');
+        if(data.length==0)response.status(404).json({data : data});
         else response.status(200).json({data : data});
     }
     
@@ -249,7 +249,7 @@ app.get('/getquestionanswers/:questionnaireID/:questionID', (request, response) 
 
     function status(data){
        // console.log(data.length);
-        if(data.length==0)response.status(404).send('Not Found');
+        if(data.length==0)(response.status(404).json({data : data}));
         else response.status(200).json({data : data});
     }
 });
