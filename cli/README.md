@@ -16,13 +16,18 @@ The testing for our CLI was performed using the following packages:
 - **@jsdevtools/chai-exec**  
 
 ## Command format:  
+Before executing the commands below, run the following two commands:  
+`chmod +x healthcheck.js resetall.js questionnaire_upd.js resetq.js questionnaire.js question.js doanswer.js getsessionanswers.js getquestionanswers.js`  
+  
+`npm link` 
+
 For every CLI command that has been implemented, it has the following syntax:  
-`$ se22XX scope --param1 value1 [--param2 value2 ...] --format fff`  
+`$ scope --param1 value1 [--param2 value2 ...] --format fff`  
 where scope is replaced with one of the commands shown below  
 
 The format can either be json or csv. If you need help regarding a particular  
 command you can run the following help command:  
-`$ se22XX scope --help`  
+`$ scope --help`  
 
 ## Available commands:  
  
