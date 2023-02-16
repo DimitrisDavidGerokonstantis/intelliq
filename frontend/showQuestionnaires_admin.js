@@ -61,8 +61,12 @@ function QuestionStat(data) {
          tableHtml += ` <button class="statistic-button" id="${queID}" name="${surTitle}" onclick="Statistics(${queID},${surID})", value="5">See Statistics</button></h3>`;
          counter++
  });
-
+    tableHtml += ` <button id="stat_back" onclick="goBack()">Back</button></h3>`;
     table.innerHTML = tableHtml;
+}
+
+function goBack(){
+    location.replace('showQuestionnaires_admin.html');
 }
 
 
@@ -75,12 +79,12 @@ function Statistics(questionID,questionnaireID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => DisplayQuestionStatistics(data['data']));   //display the results to the user with this function
+    .then(data => DisplayQuestionStatistics(data['data'],questionnaireID));   //display the results to the user with this function
 }
 
 
 //Display the question statistics to the user
-function DisplayQuestionStatistics(data) {
+function DisplayQuestionStatistics(data,questionnaireID) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0;
@@ -99,14 +103,20 @@ function DisplayQuestionStatistics(data) {
          counter++;
  });
 
-    if(counter!=0)tableHtml += `<button onclick="Back()">Back</button>`;
-    else {
-        tableHtml += `<br><br><br><h1>No Data</h1>`;
-        tableHtml += `<br><br><br><br><button onclick="Back()">Back</button>`;
-    }
+ if(counter!=0)tableHtml += `<button onclick="StatBack(${questionnaireID})">Back</button>`;
+ else {
+     tableHtml += `<br><br><br><h1>No Data</h1>`;
+    // console.log(survey);
+    tableHtml += `<br><br><br><br><button onclick="StatBack(${questionnaireID})">Back</button>`;
+    
+ }
     
     table.innerHTML = tableHtml;
     draw_chart(data2);
+}
+
+function StatBack(survey){
+    ShowQuestions(survey);
 }
 
 // draw the pie chart

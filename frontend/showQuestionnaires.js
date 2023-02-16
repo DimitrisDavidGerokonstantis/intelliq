@@ -189,10 +189,13 @@ function QuestionStat(data) {
          tableHtml += ` <button class="statistic-button" id="${queID}" name="${surTitle}" onclick="Statistics(${queID},${surID})", value="5">See Statistics</button></h3>`;
          counter++
  });
-
+    tableHtml += ` <button id="stat_back" onclick="goBack()">Back</button></h3>`;
     table.innerHTML = tableHtml;
 }
 
+function goBack(){
+    location.replace('showQuestionnaires.html');
+}
 
 //Fetch statistics for the selected question (on click of the See Statistics button)
 function Statistics(questionID,questionnaireID) {
@@ -203,16 +206,18 @@ function Statistics(questionID,questionnaireID) {
         method: 'GET'
     })
     .then(response => response.json()).then(document.getElementById('showSurveys_main').innerHTML = "")
-    .then(data => DisplayQuestionStatistics(data['data']));   //display the results to the user with this function
+    .then(data => DisplayQuestionStatistics(data['data'],questionnaireID));   //display the results to the user with this function
 }
 
 //Display the question statistics to the user
-function DisplayQuestionStatistics(data) {
+function DisplayQuestionStatistics(data,questionnaireID) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0;
     let data2=[];
-    data.forEach(function ({Survey, Session, Question,AnswerTitle, Time}) {  
+    let survey = 0;
+    data.forEach(function ({surID, Survey, Session, Question,AnswerTitle, Time}) { 
+        survey = surID;
         if(counter==0) {
             data2.push({x:AnswerTitle, value:0});
             tableHtml += `<h1>${Survey} : `;
@@ -226,10 +231,12 @@ function DisplayQuestionStatistics(data) {
          counter++;
  });
 
-    if(counter!=0)tableHtml += `<button onclick="Back()">Back</button>`;
+    if(counter!=0)tableHtml += `<button onclick="Back(${survey})">Back</button>`;
     else {
         tableHtml += `<br><br><br><h1>No Data</h1>`;
-        tableHtml += `<br><br><br><br><button onclick="Back()">Back</button>`;
+       // console.log(survey);
+       tableHtml += `<br><br><br><br><button onclick="Back(${questionnaireID})">Back</button>`;
+       
     }
     
     table.innerHTML = tableHtml;
@@ -260,8 +267,9 @@ anychart.onDocumentReady(function() {
 
 
 //Back button after checking statistics of a question
-function Back(){
-    location.replace('showQuestionnaires.html');
+function Back(survey){
+    console.log(survey);
+    ShowQuestions(survey);
 }
 
 let helper;
@@ -321,9 +329,13 @@ function loadSurveyDetails(data) {
          tableHtml += `<button id="${queID}" onclick="ShowQuestionDet(${queID})" value="${queID}">Question Details</button></h3>`;
          counter++;
  })
-    tableHtml += `<button onclick="Back()">Back</button>`;
+    tableHtml += `<button onclick="CentralBack()">Back</button>`;
 
     table.innerHTML = tableHtml;
+}
+
+function CentralBack(){
+    location.replace('showQuestionnaires.html');
 }
 
 //Fetch selected questions' answers and their details
@@ -344,8 +356,9 @@ function loadQueDet(data) {
     let tableHtml = "";
     let counter = 0;
     let graph_data=[];
-    
+    let surveyID = 0;
     data.forEach(function ({surID, queID, queTitle, required, qtype, ansID, ansTitle, nextID,nextq_title}) {  
+         surveyID = surID;
          if(counter==0) {
             tableHtml += `<h1>Survey #${surID}, Question : '${queTitle}'(#${queID})  `;
             if(required==1) tableHtml += `*`;
@@ -372,13 +385,16 @@ function loadQueDet(data) {
     tableHtml +=`</p>`
     tableHtml +=`</figure>`
 
-    tableHtml += `<button onclick="Back()">Back</button>`;
-    
+    if(surveyID===0)tableHtml += `<button onclick="CentralBack()">Back</button>`;
+    else tableHtml += `<button onclick="FlowBack(${surveyID})">Back</button>`;
     table.innerHTML = tableHtml;
     graph(graph_data);
     
 }
 
+function FlowBack(surveyID){
+    ShowDetails(surveyID);
+}
 
 
 // Search Bar Implementation
