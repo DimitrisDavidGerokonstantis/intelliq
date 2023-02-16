@@ -343,21 +343,40 @@ function loadQueDet(data) {
     const table = document.querySelector('#showSurveys_main');
     let tableHtml = "";
     let counter = 0;
-    data.forEach(function ({surID, queID, queTitle, required, qtype, ansID, ansTitle, nextID}) {  
+    let graph_data=[];
+    
+    data.forEach(function ({surID, queID, queTitle, required, qtype, ansID, ansTitle, nextID,nextq_title}) {  
          if(counter==0) {
-            tableHtml += `<h1>Question : (#${queID}) ${queTitle} `;
+            tableHtml += `<h1>Survey #${surID}, Question : '${queTitle}'(#${queID})  `;
             if(required==1) tableHtml += `*`;
             if(qtype==1) tableHtml += `(profile)`;
             else tableHtml += `(question)`;
-            tableHtml += `, of Survey #${surID}</h1>`;
+            tableHtml += `</h1>`;
+            tableHtml +=`<script src="https://code.highcharts.com/highcharts.js"></script>`
+            tableHtml +=`<script src="https://code.highcharts.com/modules/networkgraph.js"></script>`
+            tableHtml +=`<script src="https://code.highcharts.com/modules/exporting.js"></script>`
+            tableHtml +=`<script src="https://code.highcharts.com/modules/accessibility.js"></script>`
+            
          }
-         tableHtml += `<h3>(${ansID}) ${ansTitle} | Next: ${nextID}</h3>`;
+         let ans = 'Answer :' +ansTitle;
+         let que = 'Question :' +nextq_title;
+         graph_data.push([ans,que]);
+         tableHtml += `<h3>Option ${counter+1}: '${ansTitle}'(#${ansID}) &#x2192 Next Question: '${nextq_title}'(#${nextID})</h3>`;
          
          counter++;
  })
-    tableHtml += `<button onclick="Back()">Back</button>`;
+    
+    tableHtml +=`<figure class="highcharts-figure">`
+    tableHtml +=`<div id="container2"></div>`
+    tableHtml +=`<p class="highcharts-description">`
+    tableHtml +=`</p>`
+    tableHtml +=`</figure>`
 
+    tableHtml += `<button onclick="Back()">Back</button>`;
+    
     table.innerHTML = tableHtml;
+    graph(graph_data);
+    
 }
 
 
@@ -398,3 +417,84 @@ var TableFilter = (function() {
 	})(); 
  TableFilter.init(); 
 })();
+
+
+function graph(data){
+Highcharts.addEvent(
+    Highcharts.Series,
+    'afterSetOptions',
+    function (e) {
+        var colors = Highcharts.getOptions().colors,
+            i = 0,
+            nodes = {};
+
+        if (
+            this instanceof Highcharts.Series.types.networkgraph &&
+            e.options.id === 'lang-tree'
+        ) {
+            e.options.data.forEach(function (link) {
+
+                if (link[0] === link[0]) {
+                    nodes[link[0]] = {
+                        id: link[0],
+                        marker: {
+                            radius: 20
+                        }
+                    };
+                    nodes[link[1]] = {
+                        id: link[1],
+                        marker: {
+                            radius: 10
+                        },
+                        color: colors[i++]
+                    };
+                } else if (nodes[link[0]] && nodes[link[0]].color) {
+                    nodes[link[1]] = {
+                        id: link[1],
+                        color: nodes[link[0]].color
+                    };
+                }
+            });
+
+            e.options.nodes = Object.keys(nodes).map(function (id) {
+                return nodes[id];
+            });
+        }
+    }
+);
+
+Highcharts.chart('container2', {
+    chart: {
+        type: 'networkgraph',
+        height: '100%'
+    },
+    title: {
+        text: 'Flow',
+        align: 'left'
+    },
+    subtitle: {
+        text: 'Below you can see the Flow. The smaller circles represent the questions and the biger ones represent the answers. Each answer is connected with the question it leads to ',
+        align: 'left'
+    },
+    plotOptions: {
+        networkgraph: {
+            keys: ['from', 'to'],
+            layoutAlgorithm: {
+                enableSimulation: false,
+                friction: -0.9
+            }
+        }
+    },
+    series: [{
+        accessibility: {
+            enabled: false
+        },
+        dataLabels: {
+            enabled: true,
+            linkFormat: ''
+        },
+        id: 'lang-tree',
+        data: data
+    }]
+});
+}

@@ -568,14 +568,15 @@ class DbService {
         try {
             let error = false;
             const response = await new Promise((resolve, reject) => {
-                const query = "select survey_id as surID, que.id as queID, que.title as queTitle, required, qtype, ans.id as ansID, ans.title as ansTitle, next_question_id as nextID from questions as que inner join answers as ans on que.id = whose_question_id where que.id = ? ;";
+                const query = "select surID, queID, queTitle, required, qtype, ansID, ansTitle, nextID, nextq_title from(select survey_id as surID, que.id as queID, que.title as queTitle, required, qtype, ans.id as ansID, ans.title as ansTitle, next_question_id as nextID from questions as que inner join answers as ans on que.id = whose_question_id where que.id = ?) as first inner join (select title as nextq_title,id from questions) as second on first.nextID=second.id union select survey_id as surID, que.id as queID, que.title as queTitle, required, qtype, ans.id as ansID, ans.title as ansTitle, next_question_id as nextID,'End of the Questionnaire' as nextq_title  from questions as que inner join answers as ans on que.id = whose_question_id where que.id = ? and next_question_id=0 ;";
 
-                connection.query(query, [questionID], (err, results) => {
+                connection.query(query, [questionID,questionID], (err, results) => {
                     if (err) error=true;
                     if(!err)resolve(results); else resolve();
                 })
             });
-            return (!error)? response : []; // if an error occured, return empty list so that API can return error message and error code to the user
+            
+                return (!error)? response : []; // if an error occured, return empty list so that API can return error message and error code to the user
         } catch (error) {
             console.log(error);
         }
@@ -639,18 +640,34 @@ class DbService {
 
 
 
+
+   
+    async checkIfSessionExists(sessionID) {
+        try {
+            let error = false;
+            const response = await new Promise((resolve, reject) => {
+                const query = "select session_id from session where session_id=?;";
+
+                connection.query(query, [sessionID], (err, results) => {
+                    if (err) error=true;
+                    if(!err)resolve(results); else resolve();
+                })
+            });
+               // console.log(response);
+                return (!error)? response : []; // if an error occured, return empty list so that API can return error message and error code to the user
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+
+
     /* route : /cli/doanswer/:questionnaireID/:questionID/:session/:optionID | use : same as SaveGivenAnswer() but using CLI*/
     async CliSaveGivenAnswer(surveyID,sessionID,optionID) {
         /// later: function to check if the given sessionID already exists OR trigger in database
         try {
             let error=false;
-            const insertId99 = await new Promise((resolve, reject) => {
-                const query99 = "INSERT INTO session (session_id,survey_id, registered_users_id) VALUES (?,?, 1);";
-                connection.query(query99, [sessionID,surveyID] , (err, result) => {
-                    if (err) error=true;
-                    if(!err)resolve(result.insertId99);else resolve();
-            });
-        });
             const insertId115 = await new Promise((resolve, reject) => {
                 const query115 = "INSERT INTO answers_registered_users (answers_id,registered_users_id,session_id) VALUES (?,?, ?);";
 
@@ -667,6 +684,7 @@ class DbService {
             console.log(error);
         }
     }
+
 
 }
 module.exports = DbService;

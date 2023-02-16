@@ -350,26 +350,30 @@ app.post('/admin/resetq/:questionnaireID', (request, response) => {
 //doanswer from cli
 app.post('/cli/doanswer/:questionnaireID/:questionID/:session/:optionID', (request, response) => {
      const sessionID  = request.params.session;
-     console.log('session',sessionID);
-     
+     //console.log('session',sessionID);
      const optionID  = request.params.optionID;
-     console.log('option',optionID);
-
+     //console.log('option',optionID);
      const surveyID  = request.params.questionnaireID;
-     console.log('questionnaire',surveyID);
+    // console.log('questionnaire',surveyID);
 
      const db = dbService.getDbServiceInstance();
-     const result = db.CliSaveGivenAnswer(surveyID,sessionID,optionID);
+     const result1 = db.checkIfSessionExists(sessionID);
+     var session;
+     result1
+     .then(data => session=data);
+
+    let ses_result;
+    if(session==[]) ses_result = db.createNewSession(surveyID);
+    var result;
+     result = db.CliSaveGivenAnswer(surveyID,sessionID,optionID);
      result
      .then(data => status(data))
      .catch(err => console.log(err));
-     
- 
+    
      function status(data){
          if(data.length==0)response.status(400).send('Bad Request');
          else response.status(200).json({data : data});
      }
-
  });
 
 
