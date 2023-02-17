@@ -12,6 +12,10 @@ the next question is brought according to the flow, it is also answered and the 
 - Admin use case: The admin logs in, creates a new questionnaire, adds three questions, sees the summary of the survey that he  
 created and defines the flow of the questions.   
 
+Attention! For the test cases to work, the user-test.json file (id = 60) is needed. Before running the tests, add this questionnaire if it's not  
+already in the database by the following CLI command (while being in the cli folder):  
+`questionnaire_upd --source user-test.json`  
+
 The following packages are needed for the testing (the implementation is done with node.js):  
 - chai  
 - chai-http  
