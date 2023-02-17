@@ -58,12 +58,11 @@ CLI commands:
 7. (ομοίως με βήμα 2)
 
 ___
-Πριν από Postman : (!!!)
-createUser --username 'dimitris@mail.gr' --password 'hello1' --id 1
-
 
 Στην επίδειξη του Frontend : Προσθήκη ερωτηματολογίου user-test.json (id 60)
 
+Πριν από Testing : (!!!)
+createUser --username 'dimitris@mail.gr' --password 'hello1' --id 2
 
 TESTING:
 Στο API Testing δεν πρέπει να τρέχει η εφαρμογή, στο CLI Testing πρέπει !
