@@ -17,7 +17,7 @@ The testing for our CLI was performed using the following packages:
 
 ## Command format:  
 Before executing the commands below, run the following two commands:  
-`chmod +x healthcheck.js resetall.js questionnaire_upd.js resetq.js questionnaire.js question.js doanswer.js getsessionanswers.js getquestionanswers.js`  
+`chmod +x healthcheck.js resetall.js questionnaire_upd.js resetq.js questionnaire.js question.js doanswer.js getsessionanswers.js getquestionanswers.js createUser.js`  
   
 `npm link` 
 
@@ -42,9 +42,15 @@ question  | questionnaire_id, question_id, format  | Display all answers of a sp
 doanswer  | questionnaire_id, question_id, session_id, option_id, format  | Answer a specific question  
 getsessionanswers  | questionnaire_id, session_id, format  | Get all answers given in a specific session for a questionnaire  
 getquestionanswers  | questionnaire_id, question_id, format  | Get all answers given for a specific question  
+createUser  | username, password  | Creates a new user account   
+
+Attention! Using the resetall command also deletes the users of the system (not the admins). In order to be able to run the application  
+at least one user with id = 1 must be in the database. To do that use the createUser command as follows (if you have used resetall):  
+`createUser --username dimitris@mail.gr --password hello1`
 
 ## How to perform testing:  
 You can test our CLI by running the following command:  
 `npm test`  
-while being in the **cli** folder.
+while being in the **cli** folder.  
+The CLI testing uses the example4.json (which is contained in the same folder). Careful: the CLI testing also performs the resetall command (see above).
 
