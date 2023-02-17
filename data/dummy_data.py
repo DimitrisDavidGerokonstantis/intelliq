@@ -21,8 +21,8 @@ with open('dummy_data.sql', 'w') as f:
     print("INSERT INTO category(title) VALUES('Science');")
     print("INSERT INTO category(title) VALUES('Politics');")
     print("INSERT INTO category(title) VALUES('Other');")
-    print("insert into registered_users values(1,'dimitris@mail.gr', 'hello1', 'user');")
-    print("insert into registered_users values(2,'thanos@mail.gr', 'hello2', 'admin');")
+    print("insert into registered_users values(2,'dimitris@mail.gr', 'hello1', 'user');")
+    print("insert into registered_users values(1,'thanos@mail.gr', 'hello2', 'admin');")
     print("insert into registered_users values(3,'philip@mail.gr', 'hello3', 'admin');") 
     print("insert into registered_users values(4,'yiannis@mail.gr', 'hello4', 'user');")
 
