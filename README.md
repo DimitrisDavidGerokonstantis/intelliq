@@ -25,11 +25,11 @@ the previous sql file. After these steps, the database will have been successful
 Firstly, download Node.js/Express.js (following the instructions in their website).   
 While being in the main folder of the project (SoftEng22-17), run the following commands to create a Node.js project and install the necessary packages:    
 `npm init -y`   
-`npm install --global @jsdevtools/chai-exec chai chai-http cors csv csv-stringify dotenv express fs json2csv mocha mysql nodemon save-dev`  
+`npm install @jsdevtools/chai-exec chai chai-http cors csv csv-stringify dotenv express fs json2csv mocha mysql nodemon save-dev`  
 
 While being in the cli folder of the project (SoftEng22-17/cli), run the following commands:  
 `npm init -y`  
-`npm install --global @jsdevtools/chai-exec axios yargs`  
+`npm install @jsdevtools/chai-exec axios yargs`  
 
 All the above mentioned packages can also be found in the respective package.json files.  
 
