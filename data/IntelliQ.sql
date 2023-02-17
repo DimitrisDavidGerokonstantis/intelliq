@@ -166,8 +166,8 @@ INSERT INTO category(title) VALUES('Other');
 
  
 
-insert into registered_users values(1,'dimitris@mail.gr', 'hello1', 'user');
-insert into registered_users values(2,'thanos@mail.gr', 'hello2', 'admin');
+insert into registered_users values(2,'dimitris@mail.gr', 'hello1', 'user');
+insert into registered_users values(1,'thanos@mail.gr', 'hello2', 'admin');
 insert into registered_users values(3,'philip@mail.gr', 'hello3', 'admin');
 insert into registered_users values(4,'yiannis@mail.gr', 'hello4', 'user');
 
