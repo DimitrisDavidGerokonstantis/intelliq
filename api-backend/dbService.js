@@ -606,12 +606,12 @@ class DbService {
 
 
     /* route : /admin/createUser | use : insert a new user or admin*/
-    async createUser(username, password) {
+    async createUser(username, password,id) {
         try {
             const insertId = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO registered_users (email, pass_word, roles) VALUES (?, ?, 'user');";
+                const query = "INSERT INTO registered_users (id,email, pass_word, roles) VALUES (?,?, ?, 'user');";
 
-                connection.query(query, [username, password] , (err, result) => {
+                connection.query(query, [id,username, password] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                     console.log(result.affectedRows + " record inserted");

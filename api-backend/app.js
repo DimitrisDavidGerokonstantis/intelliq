@@ -326,9 +326,9 @@ app.get('/getquestiondetails/:questionID', (request, response) => {
 
 //Create a new user
 app.post('/admin/createUser', (request, response) => {
-  const {username,password} = request.body;
+  const {username,password,id} = request.body;
      const db = dbService.getDbServiceInstance();
-     const result = db.createUser(username, password);
+     const result = db.createUser(username, password,id);
      result
      .then(data => response.json({ data: data}))
      .catch(err => console.log(err));
