@@ -305,6 +305,28 @@ class DbService {
         }
     }
 
+    async CLIcreateNewSession(survID,sessionID) {
+        try {
+            let error = false;
+            const insertId32 = await new Promise((resolve, reject) => {
+                const query38 = "INSERT INTO session (session_id,survey_id, registered_users_id) VALUES (?,?, 1);";
+
+                connection.query(query38, [sessionID,survID] , (err, result) => {
+                    if (err) {error=true};
+                    if(!err) resolve(result.insertId32); else resolve();
+                })
+            });
+            
+            return (!error)?{
+                session_id:sessionID,
+                survID:survID
+            }:[];  // if an error occured, return empty list so that API can return error message and error code to the user
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 
     /* route : /doanswer/:questionnaireID/:questionID/:session/:optionID | use : save the given answer in a question*/
     async SaveGivenAnswer(sessionID,optionID) {

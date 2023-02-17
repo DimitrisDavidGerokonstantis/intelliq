@@ -20,7 +20,7 @@ describe("CLI_Testing", () => {
   });
 
   // testing command getquestionanswers 
-  it("Get all given answers in a specific question of a specific questionnaire. \n\tCOMMAND : getquestionanswers --questionnaire_id 100 --question_id 300 --format json", () => {
+  it("Get all given answers in a specific question of a specific questionnaire. \n\tCOMMAND : getquestionanswers --questionnaire_id 100 --question_id 101 --format json", () => {
     let myCLI = chaiExec('getquestionanswers --questionnaire_id 100 --question_id 101 --format json'); // execute the command
     chai.expect(myCLI.exitCode).to.equal(200); // it should return status 200
   });

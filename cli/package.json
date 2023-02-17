@@ -10,8 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@jsdevtools/chai-exec": "^2.1.1",
-    "axios": "^1.2.3",
-    "yargs": "^17.6.2"
+    "axios": "^1.3.3",
+    "yargs": "^17.7.0"
   },
   "bin": {
     "getsessionanswers": "getsessionanswers.js",
@@ -25,5 +25,5 @@
     "questionnaire": "questionnaire.js",
     "createUser": "createUser.js"
   },
-  "description": ""
+  "description": "We have developed a CLI tool for our application, where the user/admin can execute certain  \r commands and receive return messages in JSON format. The folder also includes CLI functional  \r and unit testing that verify our CLI's functionality."
 }

@@ -358,12 +358,13 @@ app.post('/cli/doanswer/:questionnaireID/:questionID/:session/:optionID', (reque
 
      const db = dbService.getDbServiceInstance();
      const result1 = db.checkIfSessionExists(sessionID);
-     var session;
+     let session=[];
      result1
      .then(data => session=data);
 
+    console.log(session);
     let ses_result;
-    if(session==[]) ses_result = db.createNewSession(surveyID);
+    if(session.length==0) {ses_result = db.CLIcreateNewSession(surveyID,sessionID);}
     var result;
      result = db.CliSaveGivenAnswer(surveyID,sessionID,optionID);
      result

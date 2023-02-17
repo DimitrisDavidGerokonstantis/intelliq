@@ -58,7 +58,7 @@ else {
     if(format=='csv')console.log(csvString);
     // if required format is unknown
     if(format!='json' && format!='csv') console.log('Unknown Format');
-    console.log(response.status);
+    //console.log(response.status);
     process.exitCode = response.status;
 })
 .catch((err) => {
