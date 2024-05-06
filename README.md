@@ -66,7 +66,7 @@ For our collaboration regarding both the code and project management we used Git
 | ------------- | ------------- |
 |  [Dimitrios-David Gerokonstantis](https://github.com/DimitrisDavidGerokonstantis)  | el19209  |   
 |  [Athanasios Tsoukleidis-Karydakis](https://github.com/ThanosTsoukleidis-Karydakis) | el19009  |
-|  Filippos Sevastakis  |  el19183 |  
+|  [Filippos Sevastakis](https://github.com/FilipposSevastakis)  |  el19183 |  
 | Ioannis Karavgoustis  |  el19847 |    
   
 
